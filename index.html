@@ -3,91 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Beach or Nah?</title>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <title>Beach or Nah? | Real-Time Tides &amp; Coastal Weather</title>
+  <meta name="description" content="Find out if it's the right time for the beach. Live UK tide levels, wave animations, and real-time coastal weather forecast." />
+  <meta name="theme-color" content="#ff9a6c" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --primary: #2a9d8f;
+      --primary-hover: #21867a;
+      --accent-gold: #ffd700;
+      --accent-coral: #f4a261;
+      --accent-teal: #7dd3c0;
+      --card-bg: rgba(255, 255, 255, 0.14);
+      --card-border: rgba(255, 255, 255, 0.28);
+      --card-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+      --font-display: 'Bebas Neue', cursive, sans-serif;
+      --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
     body {
       min-height: 100vh;
-      background: linear-gradient(160deg, #ff9a6c 0%, #ffd6ba 40%, #f4e4c1 100%);
-      font-family: 'Space Mono', monospace;
-      color: white;
+      background: linear-gradient(160deg, #ff8c53 0%, #ffb68c 35%, #ffd6ba 70%, #f7e6c4 100%);
+      font-family: var(--font-body);
+      color: #ffffff;
       overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     /* ── Header ── */
     header {
       text-align: center;
-      padding: 40px 20px 10px;
+      padding: 44px 20px 14px;
     }
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(52px, 10vw, 88px);
-      letter-spacing: 10px;
-      color: #fff;
-      text-shadow: 4px 4px 16px rgba(0,0,0,0.35);
-      line-height: 1;
-    }
-    .subtitle {
-      font-size: 12px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
-      margin-top: 8px;
-    }
-
-    /* ── Card ── */
-    .card {
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 24px;
-      padding: 28px;
-    }
-
-    /* ── Location panel ── */
-    .location-panel {
-      max-width: 540px;
-      margin: 32px auto 0;
-      padding: 0 16px;
-    }
-    .panel-label {
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       font-size: 11px;
+      font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 11vw, 96px);
+      letter-spacing: 8px;
+      color: #ffffff;
+      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+      line-height: 0.95;
+    }
+    .subtitle {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      margin-top: 10px;
+    }
+
+    /* ── Main Container ── */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    /* ── Glass Cards ── */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: var(--card-shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .panel-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.8);
       margin-bottom: 16px;
       text-align: center;
     }
+
+    /* ── Location Panel ── */
+    .location-panel {
+      max-width: 540px;
+      margin: 24px auto 0;
+    }
+
+    .presets-container {
+      margin-bottom: 18px;
+    }
+    .presets-title {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .preset-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+    .chip {
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--font-body);
+    }
+    .chip:hover {
+      background: rgba(255, 255, 255, 0.32);
+      transform: translateY(-1px);
+    }
+
+    /* ── Buttons ── */
     .btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
       padding: 14px 24px;
       border: none;
       border-radius: 50px;
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-weight: 700;
       font-size: 13px;
       letter-spacing: 1px;
       cursor: pointer;
-      transition: transform 0.12s, box-shadow 0.12s;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      text-decoration: none;
     }
-    .btn:active { transform: scale(0.97); }
+    .btn:active { transform: scale(0.98); }
     .btn-primary {
-      background: #2a9d8f;
+      background: var(--primary);
       color: white;
-      box-shadow: 0 4px 18px rgba(42,157,143,0.45);
+      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.4);
     }
-    .btn-primary:hover { box-shadow: 0 6px 24px rgba(42,157,143,0.6); }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 8px 26px rgba(42, 157, 143, 0.55);
+    }
     .btn-secondary {
-      background: rgba(255,255,255,0.15);
+      background: rgba(255, 255, 255, 0.18);
       color: white;
-      border: 1px solid rgba(255,255,255,0.3);
-      margin-top: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      margin-top: 12px;
     }
-    .btn-secondary:hover { background: rgba(255,255,255,0.22); }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.28);
+    }
 
+    /* ── Inputs ── */
     .coords-row {
       display: flex;
       gap: 12px;
@@ -100,287 +197,395 @@
       gap: 6px;
     }
     .field label {
+      font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255, 255, 255, 0.75);
     }
     .field input {
-      background: rgba(0,0,0,0.2);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0, 0, 0, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 12px;
       padding: 10px 14px;
       color: white;
-      font-family: 'Space Mono', monospace;
+      font-family: var(--font-mono);
       font-size: 14px;
       outline: none;
-      transition: border-color 0.15s;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
-    .field input:focus { border-color: rgba(42,157,143,0.8); }
-    .field input::placeholder { color: rgba(255,255,255,0.35); }
+    .field input:focus {
+      border-color: var(--accent-teal);
+      background: rgba(0, 0, 0, 0.3);
+    }
+    .field input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
 
-    /* API key row */
+    /* ── API Row ── */
     .api-row {
       display: flex;
       gap: 10px;
       align-items: flex-end;
-      margin-top: 14px;
+      margin-top: 16px;
     }
     .api-row .field { flex: 1; }
     .api-save-btn {
-      padding: 10px 18px;
+      padding: 11px 18px;
       border-radius: 12px;
       font-size: 11px;
       white-space: nowrap;
       width: auto;
+      margin-top: 0;
     }
     .api-hint {
-      font-size: 10px;
-      color: rgba(255,255,255,0.45);
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
       margin-top: 6px;
       text-align: right;
     }
-    .api-hint a { color: #7dd3c0; }
+    .api-hint a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
 
-    /* Status messages */
+    /* ── Status Message ── */
     #status-msg {
       text-align: center;
       font-size: 12px;
+      font-family: var(--font-mono);
       min-height: 20px;
-      margin-top: 12px;
-      color: rgba(255,255,255,0.75);
+      margin-top: 14px;
+      color: rgba(255, 255, 255, 0.85);
       transition: opacity 0.3s;
     }
-    #status-msg.error { color: #ff8585; }
-    #status-msg.success { color: #7dd3c0; }
+    #status-msg.error { color: #ffb4b4; font-weight: 700; }
+    #status-msg.success { color: #b7ffeb; font-weight: 700; }
 
-    /* ── Results ── */
+    /* ── Results Container ── */
     #results {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 16px 60px;
+      margin-top: 36px;
       display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .station-label {
       text-align: center;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .verdict-container {
+      text-align: center;
+      margin: 10px 0 26px;
+    }
+    .verdict {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: clamp(84px, 20vw, 140px);
+      background: linear-gradient(135deg, #fff275 0%, #ffd700 45%, #ff9e00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 28px rgba(255, 215, 0, 0.65));
+      letter-spacing: 8px;
+      line-height: 1;
+    }
+    .verdict-sub {
+      font-family: var(--font-mono);
       font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(26,70,69,0.9);
-      margin: 20px 0 0;
+      color: rgba(255, 255, 255, 0.9);
+      margin-top: 4px;
     }
 
-    .verdict {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(80px, 18vw, 130px);
+    /* ── Results Grid ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 12px;
+      align-items: center;
       text-align: center;
-      background: linear-gradient(135deg, #ffd700, #ffed4e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 24px rgba(255,215,0,0.55));
-      letter-spacing: 6px;
-      line-height: 1;
-      margin: 16px 0 24px;
     }
-
-    /* Weather panel */
-    #weather-panel {
-      margin-bottom: 16px;
+    .stat-item {
+      background: rgba(0, 0, 0, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 12px 8px;
     }
-    .weather-grid {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
+    .stat-icon {
+      font-size: 32px;
+      display: block;
+      margin-bottom: 4px;
     }
-    .w-item { text-align: center; }
-    .w-icon { font-size: 42px; display: block; margin-bottom: 4px; }
-    .w-label {
+    .stat-label {
+      font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 4px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2px;
     }
-    .w-value { font-size: 22px; font-weight: 700; }
-    .w-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .stat-sub {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-top: 2px;
+    }
 
-    /* Tide panel */
-    .tide-grid {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .t-item { text-align: center; }
-    .t-label {
-      font-size: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 4px;
-    }
-    .t-value { font-size: 26px; font-weight: 700; }
-
-    /* Canvas */
+    /* ── Canvas ── */
     #wave-canvas {
       width: 100%;
       height: 380px;
       border-radius: 24px;
       display: block;
       margin: 20px 0;
-      box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
-    /* Debug */
+    /* ── Debug Drawer ── */
     details {
-      margin-top: 8px;
+      margin-top: 14px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     summary {
       cursor: pointer;
+      font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      padding: 10px 0;
+      color: rgba(255, 255, 255, 0.75);
+      padding: 6px 0;
       user-select: none;
     }
     #debug-content {
-      background: rgba(0,0,0,0.8);
-      color: #7dd3c0;
-      border-radius: 14px;
-      padding: 20px;
+      background: rgba(10, 15, 25, 0.88);
+      color: var(--accent-teal);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: var(--font-mono);
       font-size: 11px;
       overflow-x: auto;
       white-space: pre-wrap;
       word-break: break-all;
+      margin: 10px 0 6px;
     }
 
-    /* Spinner */
+    /* ── Spinner ── */
     .spinner {
       display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.35);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
-      vertical-align: middle;
       margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Cloudflare beacon */
-    .cf-beacon { display: none; }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: var(--font-mono);
+      letter-spacing: 1px;
+    }
+    footer a { color: #ffffff; text-decoration: underline; }
   </style>
 </head>
 <body>
 
 <header>
+  <div class="badge">🌊 Coastal Intel</div>
   <h1>BEACH OR NAH?</h1>
-  <p class="subtitle">Real-time tides &amp; weather for your location</p>
+  <p class="subtitle">Live UK Tides, Weather &amp; Wave Conditions</p>
 </header>
 
-<!-- Location + settings panel -->
-<div class="location-panel">
-  <div class="card">
-    <p class="panel-label">📍 Your Location</p>
-    <button class="btn btn-primary" id="geo-btn">📍 Use My Current Location</button>
-    <div class="coords-row">
-      <div class="field">
-        <label>Latitude</label>
-        <input type="number" id="lat-input" step="0.0001" placeholder="52.4767" />
+<main>
+  <!-- Location & Controls Card -->
+  <div class="location-panel">
+    <div class="card">
+      <p class="panel-label">📍 Choose Your Beach</p>
+
+      <!-- Quick presets -->
+      <div class="presets-container">
+        <div class="presets-title">Popular Beaches</div>
+        <div class="preset-chips" id="preset-chips">
+          <button class="chip" data-lat="50.7184" data-lon="-1.8795" data-name="Bournemouth">🏖️ Bournemouth</button>
+          <button class="chip" data-lat="50.8225" data-lon="-0.1372" data-name="Brighton">🏖️ Brighton</button>
+          <button class="chip" data-lat="50.2115" data-lon="-5.4800" data-name="St Ives">🏖️ St Ives</button>
+          <button class="chip" data-lat="52.4767" data-lon="1.7514" data-name="Lowestoft">🏖️ Lowestoft</button>
+          <button class="chip" data-lat="54.2831" data-lon="-0.3998" data-name="Scarborough">🏖️ Scarborough</button>
+          <button class="chip" data-lat="53.8175" data-lon="-3.0357" data-name="Blackpool">🏖️ Blackpool</button>
+        </div>
       </div>
-      <div class="field">
-        <label>Longitude</label>
-        <input type="number" id="lon-input" step="0.0001" placeholder="1.7514" />
+
+      <!-- Geolocation button -->
+      <button class="btn btn-primary" id="geo-btn">📍 Use My Current Location</button>
+
+      <!-- Manual coordinates -->
+      <div class="coords-row">
+        <div class="field">
+          <label>Latitude</label>
+          <input type="number" id="lat-input" step="0.0001" value="52.4767" placeholder="52.4767" />
+        </div>
+        <div class="field">
+          <label>Longitude</label>
+          <input type="number" id="lon-input" step="0.0001" value="1.7514" placeholder="1.7514" />
+        </div>
+      </div>
+
+      <!-- Optional OpenWeather key -->
+      <div class="api-row">
+        <div class="field">
+          <label>OpenWeather API Key (Optional)</label>
+          <input type="password" id="ow-key" placeholder="Automatic Open-Meteo fallback" />
+        </div>
+        <button class="btn btn-secondary api-save-btn" id="save-key-btn">Save</button>
+      </div>
+      <p class="api-hint">Uses Open-Meteo by default — <a href="https://openweathermap.org/api" target="_blank" rel="noopener">OpenWeather key</a> optional</p>
+
+      <!-- Status message -->
+      <div id="status-msg"></div>
+
+      <!-- Main action button -->
+      <button class="btn btn-secondary" id="check-btn" style="margin-top:16px;">🌊 Check Conditions</button>
+    </div>
+  </div>
+
+  <!-- Results Section -->
+  <section id="results" aria-live="polite">
+    <p class="station-label" id="station-label"></p>
+    
+    <div class="verdict-container">
+      <div class="verdict" id="verdict-text">BEACH!</div>
+      <div class="verdict-sub" id="verdict-sub"></div>
+    </div>
+
+    <!-- Weather & Tide Cards Grid -->
+    <div class="results-grid">
+      <!-- Weather Card -->
+      <div class="card" id="weather-panel">
+        <p class="panel-label" id="weather-title">🌤️ Current Weather</p>
+        <div class="stat-grid" id="weather-grid"></div>
+      </div>
+
+      <!-- Tide Card -->
+      <div class="card" id="tide-panel">
+        <p class="panel-label" id="tide-title">🌊 Tide Conditions</p>
+        <div class="stat-grid" id="tide-grid"></div>
       </div>
     </div>
 
-    <!-- OpenWeather key -->
-    <div class="api-row">
-      <div class="field">
-        <label>OpenWeather API Key</label>
-        <input type="password" id="ow-key" placeholder="Paste your key (saved locally)" />
-      </div>
-      <button class="btn btn-secondary api-save-btn" id="save-key-btn">Save</button>
-    </div>
-    <p class="api-hint">Free key at <a href="https://openweathermap.org/api" target="_blank">openweathermap.org</a> — saved in your browser</p>
+    <!-- Live Animated Wave Canvas -->
+    <canvas id="wave-canvas" width="800" height="380"></canvas>
 
-    <div id="status-msg"></div>
-    <button class="btn btn-secondary" id="check-btn" style="margin-top:18px;">🌊 Check Conditions</button>
-  </div>
-</div>
+    <!-- API Debug Drawer -->
+    <details>
+      <summary>📡 API &amp; Sensor Data</summary>
+      <pre id="debug-content"></pre>
+    </details>
+  </section>
+</main>
 
-<!-- Results (hidden until data loads) -->
-<div id="results">
-  <p class="station-label" id="station-label"></p>
-  <div class="verdict" id="verdict-text"></div>
-
-  <!-- Weather card -->
-  <div class="card" id="weather-panel" style="margin-bottom:16px; display:none;">
-    <p class="panel-label" id="weather-title">🌤️ Current Weather</p>
-    <div class="weather-grid" id="weather-grid"></div>
-  </div>
-
-  <!-- Tide card -->
-  <div class="card" id="tide-panel">
-    <p class="panel-label" id="tide-title">🌊 Tide Conditions</p>
-    <div class="tide-grid" id="tide-grid"></div>
-  </div>
-
-  <!-- Wave canvas -->
-  <canvas id="wave-canvas"></canvas>
-
-  <!-- Debug -->
-  <details>
-    <summary>📡 API Debug Info</summary>
-    <pre id="debug-content"></pre>
-  </details>
-</div>
+<footer>
+  <p>Powered by UK Environment Agency &amp; Open-Meteo • <a href="https://github.com/aransmithson/beach-or-nah" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js"
   data-cf-beacon='{"token": "7eb348d6a4d64d1595ba7ed828a4ad13"}'></script>
 
 <script>
-// ─── State ────────────────────────────────────────────────────────────────────
+// ─── App State ─────────────────────────────────────────────────────────────────
 const state = {
-  lat: null, lon: null,
-  station: null, tideData: null, weatherData: null,
+  lat: 52.4767,
+  lon: 1.7514,
+  locationName: 'Lowestoft',
+  station: null,
+  tideData: null,
+  weatherData: null,
   animFrame: null
 };
 
-// ─── DOM refs ─────────────────────────────────────────────────────────────────
-const geoBtn    = document.getElementById('geo-btn');
-const checkBtn  = document.getElementById('check-btn');
-const latInput  = document.getElementById('lat-input');
-const lonInput  = document.getElementById('lon-input');
-const owKeyEl   = document.getElementById('ow-key');
-const saveKeyBtn= document.getElementById('save-key-btn');
-const statusEl  = document.getElementById('status-msg');
-const resultsEl = document.getElementById('results');
-const verdictEl = document.getElementById('verdict-text');
-const stationLbl= document.getElementById('station-label');
-const weatherPanel = document.getElementById('weather-panel');
-const weatherGrid  = document.getElementById('weather-grid');
-const weatherTitle = document.getElementById('weather-title');
-const tideGrid  = document.getElementById('tide-grid');
-const tideTitle = document.getElementById('tide-title');
-const debugEl   = document.getElementById('debug-content');
-const canvas    = document.getElementById('wave-canvas');
-const ctx       = canvas.getContext('2d');
+// ─── DOM References ───────────────────────────────────────────────────────────
+const geoBtn      = document.getElementById('geo-btn');
+const checkBtn    = document.getElementById('check-btn');
+const latInput    = document.getElementById('lat-input');
+const lonInput    = document.getElementById('lon-input');
+const owKeyEl     = document.getElementById('ow-key');
+const saveKeyBtn  = document.getElementById('save-key-btn');
+const statusEl    = document.getElementById('status-msg');
+const resultsEl   = document.getElementById('results');
+const verdictEl   = document.getElementById('verdict-text');
+const verdictSubEl= document.getElementById('verdict-sub');
+const stationLbl  = document.getElementById('station-label');
+const weatherPanel= document.getElementById('weather-panel');
+const weatherGrid = document.getElementById('weather-grid');
+const weatherTitle= document.getElementById('weather-title');
+const tideGrid    = document.getElementById('tide-grid');
+const tideTitle   = document.getElementById('tide-title');
+const debugEl     = document.getElementById('debug-content');
+const canvas      = document.getElementById('wave-canvas');
+const ctx         = canvas.getContext('2d');
+const presetChips = document.getElementById('preset-chips');
 
-// ─── Persist API key ──────────────────────────────────────────────────────────
+// ─── Preset Beach Chips ───────────────────────────────────────────────────────
+presetChips.addEventListener('click', e => {
+  const chip = e.target.closest('.chip');
+  if (!chip) return;
+  const lat = parseFloat(chip.dataset.lat);
+  const lon = parseFloat(chip.dataset.lon);
+  latInput.value = lat;
+  lonInput.value = lon;
+  state.lat = lat;
+  state.lon = lon;
+  state.locationName = chip.dataset.name;
+  setStatus(`📍 Selected ${chip.dataset.name}`, 'success');
+  checkConditions();
+});
+
+// ─── Persist API Key ──────────────────────────────────────────────────────────
 owKeyEl.value = localStorage.getItem('ow_api_key') || '';
 saveKeyBtn.addEventListener('click', () => {
   const k = owKeyEl.value.trim();
-  if (k) { localStorage.setItem('ow_api_key', k); setStatus('✅ API key saved', 'success'); }
-  else    { localStorage.removeItem('ow_api_key'); setStatus('Key cleared', ''); }
+  if (k) {
+    localStorage.setItem('ow_api_key', k);
+    setStatus('✅ OpenWeather API key saved', 'success');
+  } else {
+    localStorage.removeItem('ow_api_key');
+    setStatus('OpenWeather key cleared (using Open-Meteo)', '');
+  }
 });
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
+// ─── Helper Functions ─────────────────────────────────────────────────────────
 function setStatus(msg, type = '') {
   statusEl.textContent = msg;
   statusEl.className = type;
@@ -389,42 +594,66 @@ function setStatus(msg, type = '') {
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371, toR = Math.PI / 180;
   const dLat = (lat2 - lat1) * toR, dLon = (lon2 - lon1) * toR;
-  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*toR)*Math.cos(lat2*toR)*Math.sin(dLon/2)**2;
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * toR) * Math.cos(lat2 * toR) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
 function windDir(deg) {
-  return ['N','NE','E','SE','S','SW','W','NW'][Math.round(deg/45) % 8];
+  return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(deg / 45) % 8];
 }
 
-function weatherEmoji(condition, icon) {
-  const map = {
-    Thunderstorm:'⛈️', Drizzle:'🌦️', Rain:'🌧️', Snow:'❄️',
-    Mist:'🌫️', Fog:'🌫️', Haze:'🌫️', Smoke:'🌫️', Dust:'🌫️',
-    Clear:'☀️'
-  };
-  if (map[condition]) return map[condition];
-  if (condition === 'Clouds') return icon.includes('02') || icon.includes('03') ? '⛅' : '☁️';
-  return '🌤️';
+function wmoCodeToDetails(code) {
+  if (code === 0) return { desc: 'Clear Sky', icon: '☀️', condition: 'Clear' };
+  if (code === 1) return { desc: 'Mainly Clear', icon: '🌤️', condition: 'Clear' };
+  if (code === 2) return { desc: 'Partly Cloudy', icon: '⛅', condition: 'Clouds' };
+  if (code === 3) return { desc: 'Overcast', icon: '☁️', condition: 'Clouds' };
+  if ([45, 48].includes(code)) return { desc: 'Foggy', icon: '🌫️', condition: 'Fog' };
+  if ([51, 53, 55, 56, 57].includes(code)) return { desc: 'Drizzle', icon: '🌦️', condition: 'Drizzle' };
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { desc: 'Rain', icon: '🌧️', condition: 'Rain' };
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return { desc: 'Snow', icon: '❄️', condition: 'Snow' };
+  if ([95, 96, 99].includes(code)) return { desc: 'Thunderstorm', icon: '⛈️', condition: 'Thunderstorm' };
+  return { desc: 'Fair', icon: '🌤️', condition: 'Clear' };
+}
+
+// ─── Reverse Geocoding ────────────────────────────────────────────────────────
+async function reverseGeocode(lat, lon) {
+  try {
+    const res = await fetch(
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
+    );
+    if (!res.ok) return null;
+    const d = await res.json();
+    return d.locality || d.city || d.principalSubdivision || null;
+  } catch {
+    return null;
+  }
 }
 
 // ─── Geolocation ──────────────────────────────────────────────────────────────
 geoBtn.addEventListener('click', () => {
-  if (!navigator.geolocation) { setStatus('Geolocation not supported — enter manually', 'error'); return; }
+  if (!navigator.geolocation) {
+    setStatus('Geolocation not supported — enter manually', 'error');
+    return;
+  }
   geoBtn.innerHTML = '<span class="spinner"></span>Getting location…';
   geoBtn.disabled = true;
+
   navigator.geolocation.getCurrentPosition(
-    pos => {
+    async pos => {
       state.lat = pos.coords.latitude;
       state.lon = pos.coords.longitude;
       latInput.value = state.lat.toFixed(4);
       lonInput.value = state.lon.toFixed(4);
-      setStatus(`✅ Location: ${state.lat.toFixed(4)}, ${state.lon.toFixed(4)}`, 'success');
+      
+      const city = await reverseGeocode(state.lat, state.lon);
+      state.locationName = city || `${state.lat.toFixed(2)}, ${state.lon.toFixed(2)}`;
+      setStatus(`✅ Location: ${state.locationName}`, 'success');
       geoBtn.innerHTML = '📍 Use My Current Location';
       geoBtn.disabled = false;
+      checkConditions();
     },
     err => {
-      setStatus('⚠️ Location denied — enter manually', 'error');
+      setStatus('⚠️ Location permission denied — enter coordinates manually', 'error');
       geoBtn.innerHTML = '📍 Use My Current Location';
       geoBtn.disabled = false;
     },
@@ -432,45 +661,55 @@ geoBtn.addEventListener('click', () => {
   );
 });
 
-// ─── Main check ───────────────────────────────────────────────────────────────
-checkBtn.addEventListener('click', async () => {
-  const lat = parseFloat(latInput.value);
-  const lon = parseFloat(lonInput.value);
-  if (isNaN(lat) || isNaN(lon)) { setStatus('⚠️ Enter valid coordinates', 'error'); return; }
-  state.lat = lat; state.lon = lon;
+// ─── Main Check Trigger ───────────────────────────────────────────────────────
+checkBtn.addEventListener('click', () => checkConditions());
+
+async function checkConditions() {
+  const lat = parseFloat(latInput.value || latInput.placeholder || 52.4767);
+  const lon = parseFloat(lonInput.value || lonInput.placeholder || 1.7514);
+  if (isNaN(lat) || isNaN(lon)) {
+    setStatus('⚠️ Please enter valid numeric coordinates', 'error');
+    return;
+  }
+
+  state.lat = lat;
+  state.lon = lon;
 
   checkBtn.innerHTML = '<span class="spinner"></span>Finding your nearest beach…';
   checkBtn.disabled = true;
   setStatus('');
 
   try {
-    const [station, weather] = await Promise.all([
+    const [station, weather, geoname] = await Promise.all([
       findNearestStation(lat, lon),
-      fetchWeather(lat, lon)
+      fetchWeather(lat, lon),
+      reverseGeocode(lat, lon)
     ]);
 
     if (!station) throw new Error('No tide station found near your location');
     state.station = station;
     state.weatherData = weather;
+    state.locationName = geoname || weather?.city || station.name;
 
     const tide = await fetchTide(station.id);
-    if (!tide) throw new Error(`No tide data for ${station.name}`);
+    if (!tide) throw new Error(`No recent tide readings found for ${station.name}`);
     state.tideData = tide;
 
     renderResults();
-  } catch(e) {
+  } catch (e) {
     setStatus(`❌ ${e.message}`, 'error');
   } finally {
     checkBtn.innerHTML = '🌊 Check Conditions';
     checkBtn.disabled = false;
   }
-});
+}
 
-// ─── API: Tide station ────────────────────────────────────────────────────────
+// ─── API: UK Tide Stations ────────────────────────────────────────────────────
 async function findNearestStation(lat, lon) {
   const res = await fetch(
     'https://environment.data.gov.uk/flood-monitoring/id/stations?type=TideGauge&_limit=1000'
   );
+  if (!res.ok) throw new Error(`Environment Agency API error: ${res.status}`);
   const data = await res.json();
   if (!data.items?.length) return null;
 
@@ -480,125 +719,211 @@ async function findNearestStation(lat, lon) {
     const d = haversine(lat, lon, s.lat, s.long);
     if (d < minDist) {
       minDist = d;
-      best = { id: s.stationReference || s.notation, name: s.label, lat: s.lat, lon: s.long, distance: d };
+      best = {
+        id: s.stationReference || s.notation,
+        name: s.label,
+        lat: s.lat,
+        lon: s.long,
+        distance: d
+      };
     }
   }
   return best;
 }
 
-// ─── API: Tide readings ───────────────────────────────────────────────────────
+// ─── API: Tide Readings ───────────────────────────────────────────────────────
 async function fetchTide(stationId) {
-  const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?_sorted&_limit=10`;
-  const res  = await fetch(url);
-  const data = await res.json();
-
-  if (data.items?.length >= 2) {
-    const [latest, prev] = data.items;
-    return { current: latest.value, previous: prev.value, time: latest.dateTime,
-             rising: latest.value > prev.value, raw: data };
+  try {
+    const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?_sorted&_limit=10`;
+    const res = await fetch(url);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.items?.length >= 2) {
+        const sorted = data.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+        const [latest, prev] = sorted;
+        return {
+          current: latest.value,
+          previous: prev.value,
+          time: latest.dateTime,
+          rising: latest.value >= prev.value,
+          raw: data
+        };
+      } else if (data.items?.length === 1) {
+        const latest = data.items[0];
+        return {
+          current: latest.value,
+          previous: latest.value,
+          time: latest.dateTime,
+          rising: false,
+          raw: data
+        };
+      }
+    }
+  } catch (err) {
+    console.warn('Direct tide reading failed, trying fallback measures...', err);
   }
 
-  // Fallback: look through measures
-  const sRes  = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`);
-  const sData = await sRes.json();
-  for (const m of (sData.measures || [])) {
-    const mid = m['@id'] || '';
-    if (!mid.toLowerCase().includes('level') && !mid.toLowerCase().includes('tidal')) continue;
-    const rRes  = await fetch(`${mid}/readings?_sorted&_limit=10`);
-    const rData = await rRes.json();
-    if (rData.items?.length >= 2) {
-      const [latest, prev] = rData.items;
-      return { current: latest.value, previous: prev.value, time: latest.dateTime,
-               rising: latest.value > prev.value, raw: rData };
+  // Fallback: station measures
+  try {
+    const sRes = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`);
+    const sData = await sRes.json();
+    for (const m of (sData.measures || [])) {
+      const mid = m['@id'] || '';
+      if (!mid.toLowerCase().includes('level') && !mid.toLowerCase().includes('tidal')) continue;
+      const rRes = await fetch(`${mid}/readings?_sorted&_limit=10`);
+      const rData = await rRes.json();
+      if (rData.items?.length >= 1) {
+        const sorted = rData.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
+        const latest = sorted[0];
+        const prev = sorted[1] || latest;
+        return {
+          current: latest.value,
+          previous: prev.value,
+          time: latest.dateTime,
+          rising: latest.value >= prev.value,
+          raw: rData
+        };
+      }
     }
+  } catch (err) {
+    console.warn('Fallback measure lookup failed:', err);
   }
   return null;
 }
 
-// ─── API: OpenWeather ─────────────────────────────────────────────────────────
+// ─── API: Weather (OpenWeather or Open-Meteo) ──────────────────────────────────
 async function fetchWeather(lat, lon) {
-  const key = owKeyEl.value.trim() || localStorage.getItem('ow_api_key');
-  if (!key) return null;
+  const owKey = owKeyEl.value.trim() || localStorage.getItem('ow_api_key');
+  if (owKey) {
+    try {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${owKey}&units=metric`
+      );
+      if (res.ok) {
+        const d = await res.json();
+        return {
+          source: 'OpenWeather',
+          temp: d.main.temp,
+          feelsLike: d.main.feels_like,
+          humidity: d.main.humidity,
+          windSpeed: d.wind.speed * 3.6,
+          windDeg: d.wind.deg || 0,
+          description: d.weather[0].description.replace(/\b\w/g, c => c.toUpperCase()),
+          condition: d.weather[0].main,
+          icon: d.weather[0].icon,
+          city: d.name || '',
+          visibility: (d.visibility || 10000) / 1000,
+          raw: d
+        };
+      }
+    } catch (e) {
+      console.warn('OpenWeather request failed, falling back to Open-Meteo:', e);
+    }
+  }
+
+  // Automatic Open-Meteo Fallback (No Key Required)
   try {
-    const res  = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}&units=metric`
+    const res = await fetch(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m`
     );
-    if (!res.ok) throw new Error(`OpenWeather ${res.status}`);
+    if (!res.ok) throw new Error(`Open-Meteo status ${res.status}`);
     const d = await res.json();
+    const curr = d.current;
+    const codeInfo = wmoCodeToDetails(curr.weather_code);
     return {
-      temp:        d.main.temp,
-      feelsLike:   d.main.feels_like,
-      humidity:    d.main.humidity,
-      windSpeed:   d.wind.speed * 3.6,   // m/s → km/h
-      windDeg:     d.wind.deg || 0,
-      description: d.weather[0].description.replace(/\b\w/g, c => c.toUpperCase()),
-      condition:   d.weather[0].main,
-      icon:        d.weather[0].icon,
-      city:        d.name || '',
-      visibility:  (d.visibility || 10000) / 1000,
-      raw:         d
+      source: 'Open-Meteo',
+      temp: curr.temperature_2m,
+      feelsLike: curr.apparent_temperature,
+      humidity: curr.relative_humidity_2m,
+      windSpeed: curr.wind_speed_10m,
+      windDeg: curr.wind_direction_10m || 0,
+      description: codeInfo.desc,
+      condition: codeInfo.condition,
+      icon: codeInfo.icon,
+      city: '',
+      visibility: 10,
+      raw: d
     };
-  } catch(e) {
+  } catch (e) {
     console.warn('Weather fetch failed:', e);
     return null;
   }
 }
 
-// ─── Verdict logic ────────────────────────────────────────────────────────────
+// ─── Verdict Logic ────────────────────────────────────────────────────────────
 function getVerdict(waterPct, rising, weather) {
   let v = waterPct < 30 ? 'BEACH!'
         : waterPct < 60 && !rising ? 'BEACH!'
         : waterPct > 70 ? 'NAH.'
         : 'MAYBE?';
 
-  if (!weather) return v;
-  const bad = ['Thunderstorm','Rain','Drizzle','Snow'];
-  if (bad.includes(weather.condition)) return 'NAH.';
-  if (weather.windSpeed > 55)          return 'NAH.';
-  if (weather.windSpeed > 35 && v === 'BEACH!') return 'MAYBE?';
-  if (weather.temp < 10)               return v === 'BEACH!' ? 'NAH.' : v;
-  if (weather.temp < 15 && v === 'BEACH!') return 'MAYBE?';
-  return v;
+  let reason = '';
+  if (waterPct < 30) reason = 'Low tide — wide open sand!';
+  else if (waterPct < 60 && !rising) reason = 'Tide is receding, great beach coverage!';
+  else if (waterPct > 70) reason = 'High tide — limited sand space.';
+  else reason = 'Moderate tide level.';
+
+  if (weather) {
+    const bad = ['Thunderstorm', 'Rain', 'Drizzle', 'Snow'];
+    if (bad.includes(weather.condition)) {
+      v = 'NAH.';
+      reason = `${weather.description} incoming!`;
+    } else if (weather.windSpeed > 50) {
+      v = 'NAH.';
+      reason = `Heavy gale winds (${Math.round(weather.windSpeed)} km/h)!`;
+    } else if (weather.windSpeed > 35 && v === 'BEACH!') {
+      v = 'MAYBE?';
+      reason = `Breezy conditions (${Math.round(weather.windSpeed)} km/h).`;
+    } else if (weather.temp < 10) {
+      v = 'NAH.';
+      reason = `Too chilly (${Math.round(weather.temp)}°C).`;
+    } else if (weather.temp < 15 && v === 'BEACH!') {
+      v = 'MAYBE?';
+      reason = `A bit cool (${Math.round(weather.temp)}°C) — bring layers!`;
+    }
+  }
+
+  return { verdict: v, reason };
 }
 
-// ─── Render results ───────────────────────────────────────────────────────────
+// ─── Render Results ───────────────────────────────────────────────────────────
 function renderResults() {
-  const { station, tideData, weatherData } = state;
-  const maxH = 8;
-  const waterPct = Math.min(Math.max(tideData.current / maxH * 100, 0), 100);
+  const { station, tideData, weatherData, locationName } = state;
+  const maxH = 7.5;
+  const waterPct = Math.min(Math.max((tideData.current / maxH) * 100, 0), 100);
 
-  // Station label
-  stationLbl.textContent = `${station.name} • ${station.distance.toFixed(1)}km away`;
+  // Station & Location
+  const place = locationName || station.name;
+  stationLbl.textContent = `🏖️ ${place} • Station: ${station.name} (${station.distance.toFixed(1)}km away)`;
 
   // Verdict
-  verdictEl.textContent = getVerdict(waterPct, tideData.rising, weatherData);
+  const verdictObj = getVerdict(waterPct, tideData.rising, weatherData);
+  verdictEl.textContent = verdictObj.verdict;
+  verdictSubEl.textContent = verdictObj.reason;
 
-  // Weather
+  // Weather Card
   if (weatherData) {
     const w = weatherData;
-    weatherTitle.textContent = `🌤️ Current Weather — ${w.city}`;
+    weatherTitle.textContent = `🌤️ Weather — ${place}`;
+    const icon = w.icon.startsWith('http') || w.icon.length <= 4 ? w.icon : '🌤️';
     weatherGrid.innerHTML = `
-      <div class="w-item">
-        <span class="w-icon">${weatherEmoji(w.condition, w.icon)}</span>
-        <div class="w-value" style="font-size:15px;">${w.description}</div>
+      <div class="stat-item">
+        <span class="stat-icon">${icon}</span>
+        <div class="stat-value" style="font-size:15px;">${w.description}</div>
       </div>
-      <div class="w-item">
-        <div class="w-label">Temp</div>
-        <div class="w-value">${Math.round(w.temp)}°C</div>
-        <div class="w-sub">feels ${Math.round(w.feelsLike)}°C</div>
+      <div class="stat-item">
+        <div class="stat-label">Temp</div>
+        <div class="stat-value">${Math.round(w.temp)}°C</div>
+        <div class="stat-sub">feels ${Math.round(w.feelsLike)}°C</div>
       </div>
-      <div class="w-item">
-        <div class="w-label">Wind</div>
-        <div class="w-value">${Math.round(w.windSpeed)} km/h</div>
-        <div class="w-sub">${windDir(w.windDeg)}</div>
+      <div class="stat-item">
+        <div class="stat-label">Wind</div>
+        <div class="stat-value">${Math.round(w.windSpeed)} km/h</div>
+        <div class="stat-sub">${windDir(w.windDeg)}</div>
       </div>
-      <div class="w-item">
-        <div class="w-label">Humidity</div>
-        <div class="w-value">${w.humidity}%</div>
-      </div>
-      <div class="w-item">
-        <div class="w-label">Visibility</div>
-        <div class="w-value">${w.visibility.toFixed(0)} km</div>
+      <div class="stat-item">
+        <div class="stat-label">Humidity</div>
+        <div class="stat-value">${w.humidity}%</div>
       </div>
     `;
     weatherPanel.style.display = '';
@@ -606,142 +931,145 @@ function renderResults() {
     weatherPanel.style.display = 'none';
   }
 
-  // Tide
+  // Tide Card
   const dir = tideData.rising ? 'Rising ⬆️' : 'Falling ⬇️';
-  const tideTime = new Date(tideData.time).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-  tideTitle.textContent = `🌊 Tide Conditions — ${station.name}`;
+  const tideTime = new Date(tideData.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  tideTitle.textContent = `🌊 Tide Gauge — ${station.name}`;
   tideGrid.innerHTML = `
-    <div class="t-item"><div class="t-label">Status</div><div class="t-value">${dir}</div></div>
-    <div class="t-item"><div class="t-label">Height</div><div class="t-value">${tideData.current.toFixed(2)}m</div></div>
-    <div class="t-item"><div class="t-label">Beach cover</div><div class="t-value">${Math.round(waterPct)}%</div></div>
-    <div class="t-item"><div class="t-label">Time</div><div class="t-value">${tideTime}</div></div>
+    <div class="stat-item"><div class="stat-label">Tide Status</div><div class="stat-value">${dir}</div></div>
+    <div class="stat-item"><div class="stat-label">Water Height</div><div class="stat-value">${tideData.current.toFixed(2)}m</div></div>
+    <div class="stat-item"><div class="stat-label">Beach Cover</div><div class="stat-value">${Math.round(waterPct)}%</div></div>
+    <div class="stat-item"><div class="stat-label">Last Reading</div><div class="stat-value">${tideTime}</div></div>
   `;
 
-  // Debug
+  // API Debug Drawer
   debugEl.textContent = JSON.stringify({
-    location:  { lat: state.lat, lon: state.lon },
-    station,
-    tide:      tideData.raw,
-    weather:   weatherData?.raw || null
+    coordinates: { lat: state.lat, lon: state.lon },
+    locality: locationName,
+    nearestStation: station,
+    tideReading: tideData,
+    weather: weatherData
   }, null, 2);
 
-  // Show results
+  // Reveal results
   resultsEl.style.display = 'block';
   resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Start wave animation
+  // Start animated wave canvas
   startWaves(waterPct, tideData.rising, weatherData);
 }
 
-// ─── Wave animation ───────────────────────────────────────────────────────────
+// ─── Live Wave Canvas Animation ───────────────────────────────────────────────
 function startWaves(waterPct, rising, weather) {
   if (state.animFrame) cancelAnimationFrame(state.animFrame);
 
-  // Size canvas to its display size
   const resize = () => {
-    canvas.width  = canvas.offsetWidth  * devicePixelRatio;
-    canvas.height = canvas.offsetHeight * devicePixelRatio;
+    canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
+    canvas.height = 380 * (window.devicePixelRatio || 1);
   };
   resize();
   window.addEventListener('resize', resize);
 
-  const wind      = weather?.windSpeed || 10;
+  const wind = weather?.windSpeed || 12;
   const condition = weather?.condition || 'Clear';
-  const stormy    = ['Thunderstorm','Rain'].includes(condition);
-  const rainy     = ['Rain','Drizzle'].includes(condition);
+  const stormy = ['Thunderstorm', 'Rain'].includes(condition);
+  const rainy = ['Rain', 'Drizzle'].includes(condition);
 
-  // Wave amplitude — scales with tide level AND wind
-  const amp = 22 + (waterPct / 100) * 60 + Math.min(wind / 60, 1) * 28;
+  const amp = 24 + (waterPct / 100) * 55 + Math.min(wind / 55, 1) * 26;
   const layers = stormy ? 5 : rainy ? 4 : 3;
 
-  // Sky colours
-  const skyPalette = stormy ? ['#22222e','#3a3a4e'] :
-                     rainy  ? ['#7a8fa6','#b0c4d8'] :
-                     condition === 'Clouds' ? ['#9ab8cc','#cce0ef'] :
-                                             ['#6ec6ea','#f4dfc0'];
+  const skyPalette = stormy ? ['#22222e', '#3a3a4e'] :
+                     rainy  ? ['#7a8fa6', '#b0c4d8'] :
+                     condition === 'Clouds' ? ['#9ab8cc', '#cce0ef'] :
+                                             ['#6ec6ea', '#f4dfc0'];
   const showSun = !stormy && !rainy && condition !== 'Clouds';
 
-  // Seagulls
+  // Animated seagulls
+  const dpr = window.devicePixelRatio || 1;
   const birds = Array.from({ length: wind > 20 ? 4 : 2 }, () => ({
-    x:     Math.random() * 3000,
-    y:     0.06 + Math.random() * 0.18,
-    speed: (0.5 + Math.random() * 0.7 + wind * 0.018) * devicePixelRatio,
-    amp:   9 + Math.random() * 14,
-    freq:  0.014 + Math.random() * 0.01,
+    x: Math.random() * 2000,
+    y: 0.08 + Math.random() * 0.18,
+    speed: (0.6 + Math.random() * 0.6 + wind * 0.015) * dpr,
+    amp: 8 + Math.random() * 12,
+    freq: 0.015 + Math.random() * 0.01,
     phase: Math.random() * Math.PI * 2,
-    size:  (7 + Math.random() * 5) * devicePixelRatio
+    size: (7 + Math.random() * 4) * dpr
   }));
 
   let t = 0;
 
-  function frame() {
+  function render() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-
-    const dpr  = devicePixelRatio;
     const ampD = amp * dpr;
 
-    // Sky
+    // 1. Sky Gradient
     const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.58);
     skyGrad.addColorStop(0, skyPalette[0]);
     skyGrad.addColorStop(1, skyPalette[1]);
     ctx.fillStyle = skyGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // Sun
+    // 2. Sun Glow
     if (showSun) {
-      const sx = W * 0.84, sy = H * 0.18, sr = 38 * dpr;
+      const sx = W * 0.82, sy = H * 0.2, sr = 36 * dpr;
       const glow = ctx.createRadialGradient(sx, sy, sr * 0.1, sx, sy, sr * 2.8);
-      glow.addColorStop(0, 'rgba(255,230,50,0.3)');
+      glow.addColorStop(0, 'rgba(255,235,60,0.35)');
       glow.addColorStop(1, 'rgba(255,200,30,0)');
-      ctx.beginPath(); ctx.arc(sx, sy, sr * 2.8, 0, Math.PI * 2);
-      ctx.fillStyle = glow; ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sx, sy, sr * 2.8, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+
       const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
-      core.addColorStop(0,   'rgba(255,248,160,1)');
-      core.addColorStop(0.5, 'rgba(255,220,50,1)');
-      core.addColorStop(1,   'rgba(255,180,0,0.8)');
-      ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2);
-      ctx.fillStyle = core; ctx.fill();
+      core.addColorStop(0, 'rgba(255,248,180,1)');
+      core.addColorStop(0.6, 'rgba(255,220,50,1)');
+      core.addColorStop(1, 'rgba(255,180,0,0.85)');
+      ctx.beginPath();
+      ctx.arc(sx, sy, sr, 0, Math.PI * 2);
+      ctx.fillStyle = core;
+      ctx.fill();
     }
 
-    // Sand
+    // 3. Sand Bed
     const sandY = H * 0.58;
     const sandGrad = ctx.createLinearGradient(0, sandY, 0, H);
     sandGrad.addColorStop(0, '#f4e4c1');
-    sandGrad.addColorStop(0.45, '#e8d5a8');
-    sandGrad.addColorStop(1,   '#c9a87a');
+    sandGrad.addColorStop(0.5, '#e8d5a8');
+    sandGrad.addColorStop(1, '#c9a87a');
     ctx.fillStyle = sandGrad;
     ctx.fillRect(0, sandY, W, H - sandY);
-    // Sand ripple lines
-    ctx.strokeStyle = 'rgba(180,140,80,0.15)';
+
+    // Sand ripples
+    ctx.strokeStyle = 'rgba(180,140,80,0.2)';
     ctx.lineWidth = dpr;
     for (let i = 0; i < 5; i++) {
-      const sy2 = sandY + (22 + i * 26) * dpr;
+      const sy2 = sandY + (20 + i * 24) * dpr;
       ctx.beginPath();
       ctx.moveTo(0, sy2);
-      ctx.bezierCurveTo(W*0.25, sy2 + 4*dpr, W*0.75, sy2 - 4*dpr, W, sy2);
+      ctx.bezierCurveTo(W * 0.25, sy2 + 4 * dpr, W * 0.75, sy2 - 4 * dpr, W, sy2);
       ctx.stroke();
     }
 
-    // Water base Y
-    const waterBase = H * (1 - waterPct / 100);
+    // 4. Water Base
+    const waterBase = H * (1 - (waterPct / 100) * 0.75) - 40 * dpr;
 
-    // Wave function
+    // Wave formula
     const waveY = (x, layer, time) => {
-      const spd   = 0.016 + layer * 0.007;
-      const freq1 = (layers + 2) + layer * 0.9;
-      const freq2 = layers       + layer * 0.55;
-      const a     = ampD * (0.55 + layer * 0.2);
-      const ph    = layer * 1.0;
+      const spd = 0.018 + layer * 0.008;
+      const freq1 = (layers + 2) + layer * 0.85;
+      const freq2 = layers + layer * 0.5;
+      const a = ampD * (0.5 + layer * 0.22);
+      const ph = layer * 1.1;
       return (
         a * Math.sin((x / W) * Math.PI * freq1 + time * spd * 60 + ph) +
-        a * 0.38 * Math.sin((x / W) * Math.PI * freq2 + time * (spd + 0.009) * 60)
+        a * 0.35 * Math.sin((x / W) * Math.PI * freq2 + time * (spd + 0.01) * 60)
       );
     };
 
-    // Draw wave layers (back → front)
+    // Draw wave layers
     for (let layer = layers - 1; layer >= 0; layer--) {
-      const alpha = 0.36 + layer * 0.17;
+      const alpha = 0.4 + layer * 0.16;
       ctx.beginPath();
       ctx.moveTo(0, H);
       for (let x = 0; x <= W; x += 4 * dpr) {
@@ -749,22 +1077,23 @@ function startWaves(waterPct, rising, weather) {
       }
       ctx.lineTo(W, H);
       ctx.closePath();
+
       const wg = ctx.createLinearGradient(0, waterBase - ampD, 0, H);
-      const r = layer % 2 === 0 ? 42  : 28;
+      const r = layer % 2 === 0 ? 42 : 28;
       const g = layer % 2 === 0 ? 157 : 176;
       const b = layer % 2 === 0 ? 143 : 200;
       wg.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
-      wg.addColorStop(0.55, `rgba(15,88,100,0.9)`);
-      wg.addColorStop(1,    `rgba(8,48,60,0.96)`);
+      wg.addColorStop(0.6, 'rgba(15,88,100,0.92)');
+      wg.addColorStop(1, 'rgba(8,48,60,0.98)');
       ctx.fillStyle = wg;
       ctx.fill();
     }
 
-    // Foam crest (front wave)
+    // 5. Foam Crests
     ctx.save();
     ctx.shadowBlur = 8 * dpr;
-    ctx.shadowColor = 'rgba(255,255,255,0.55)';
-    ctx.strokeStyle = 'rgba(255,255,255,0.78)';
+    ctx.shadowColor = 'rgba(255,255,255,0.6)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
     ctx.lineWidth = 2.5 * dpr;
     ctx.beginPath();
     for (let x = 0; x <= W; x += 4 * dpr) {
@@ -774,48 +1103,38 @@ function startWaves(waterPct, rising, weather) {
     ctx.stroke();
     ctx.restore();
 
-    // Secondary foam
-    ctx.strokeStyle = 'rgba(255,255,255,0.28)';
-    ctx.lineWidth = 1.5 * dpr;
-    ctx.beginPath();
-    for (let x = 0; x <= W; x += 4 * dpr) {
-      const y = waterBase + waveY(x, 1, t) + 14 * dpr;
-      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Seagulls
+    // 6. Seagulls
     birds.forEach(b => {
       b.x += b.speed;
       if (b.x > W + 40 * dpr) b.x = -40 * dpr;
       const by = H * b.y + Math.sin(t * b.freq * 60 + b.phase) * b.amp * dpr;
-      const flap = Math.sin(t * 0.09 * 60 + b.phase) * b.size * 0.55;
+      const flap = Math.sin(t * 0.09 * 60 + b.phase) * b.size * 0.6;
       ctx.beginPath();
       ctx.moveTo(b.x, by);
       ctx.quadraticCurveTo(b.x - b.size, by - b.size * 0.75 + flap, b.x - b.size * 2.2, by);
       ctx.moveTo(b.x, by);
       ctx.quadraticCurveTo(b.x + b.size, by - b.size * 0.75 + flap, b.x + b.size * 2.2, by);
-      ctx.strokeStyle = 'rgba(25,25,45,0.72)';
-      ctx.lineWidth = 1.5 * dpr;
+      ctx.strokeStyle = 'rgba(25,25,45,0.7)';
+      ctx.lineWidth = 1.6 * dpr;
       ctx.stroke();
     });
 
-    // Tide direction arrow
-    const arrowX = W * 0.055;
-    const arrowY = waterBase + 14 * dpr + Math.sin(t * 0.055 * 60) * 6 * dpr;
+    // 7. Tide Direction Indicator
+    const arrowX = W * 0.07;
+    const arrowY = waterBase + 18 * dpr + Math.sin(t * 0.06 * 60) * 6 * dpr;
     ctx.font = `bold ${22 * dpr}px sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.globalAlpha = 0.82;
+    ctx.globalAlpha = 0.85;
     ctx.fillStyle = rising ? '#7dd3c0' : '#f4a261';
     ctx.fillText(rising ? '▲' : '▼', arrowX, arrowY);
     ctx.globalAlpha = 1;
 
     t += 0.016;
-    state.animFrame = requestAnimationFrame(frame);
+    state.animFrame = requestAnimationFrame(render);
   }
 
-  frame();
+  render();
 }
 </script>
 </body>
