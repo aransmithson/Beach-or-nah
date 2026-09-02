@@ -2,595 +2,798 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Beach or Nah? | Real-Time Tides &amp; Coastal Weather</title>
-  <meta name="description" content="Find out if it's the right time for the beach. Live UK tide levels, wave animations, and real-time coastal weather forecast." />
-  <meta name="theme-color" content="#ff9a6c" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Beach or Nah? | Live UK Tides</title>
+  <meta name="description" content="Beach or Nah? Live UK coastal tide heights, wave animations, and nearest station locator." />
+  <meta name="theme-color" content="#120e28" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     :root {
-      --primary: #2a9d8f;
-      --primary-hover: #21867a;
-      --accent-gold: #ffd700;
-      --accent-coral: #f4a261;
-      --accent-teal: #7dd3c0;
-      --card-bg: rgba(255, 255, 255, 0.14);
-      --card-border: rgba(255, 255, 255, 0.28);
-      --card-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
-      --font-display: 'Bebas Neue', cursive, sans-serif;
-      --font-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'Space Mono', monospace;
+      /* Super Fun Vibrant Beach Palette */
+      --bg-dark: #120e28;
+      --surface: rgba(30, 21, 58, 0.82);
+      --surface-elevated: rgba(42, 28, 80, 0.88);
+      --surface-border: rgba(255, 255, 255, 0.15);
+      --surface-border-active: rgba(0, 245, 212, 0.6);
+      --text-primary: #ffffff;
+      --text-secondary: #c4b5fd;
+      --text-tertiary: #8b7bb8;
+      
+      --neon-cyan: #00f5d4;
+      --hot-coral: #ff4d6d;
+      --sun-gold: #ffba08;
+      --sky-azure: #00bbf9;
+      --flamingo-pink: #f72585;
+
+      --font-display: 'Outfit', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(160deg, #ff8c53 0%, #ffb68c 35%, #ffd6ba 70%, #f7e6c4 100%);
+      min-height: -webkit-fill-available;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(at 10% 10%, rgba(255, 77, 109, 0.28) 0%, transparent 45%),
+        radial-gradient(at 90% 15%, rgba(255, 186, 8, 0.25) 0%, transparent 45%),
+        radial-gradient(at 50% 80%, rgba(0, 245, 212, 0.22) 0%, transparent 55%),
+        radial-gradient(at 90% 90%, rgba(123, 44, 191, 0.25) 0%, transparent 50%);
+      background-attachment: fixed;
       font-family: var(--font-body);
-      color: #ffffff;
-      overflow-x: hidden;
+      color: var(--text-primary);
       display: flex;
       flex-direction: column;
+      align-items: center;
+      padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
     }
 
-    /* ── Header ── */
-    header {
-      text-align: center;
-      padding: 44px 20px 14px;
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 16px 40px;
+      gap: 16px;
     }
-    .badge {
+
+    /* ── Playful Top Bar ── */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 2px 2px;
+    }
+
+    .app-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon-bubble {
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--hot-coral) 0%, var(--sun-gold) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 4px 18px rgba(255, 77, 109, 0.45);
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-3px) rotate(4deg); }
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--sun-gold) 75%, var(--hot-coral) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+    }
+
+    .locate-btn {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 16px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-    }
-    h1 {
-      font-family: var(--font-display);
-      font-size: clamp(56px, 11vw, 96px);
-      letter-spacing: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
-      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
-      line-height: 0.95;
-    }
-    .subtitle {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.85);
-      margin-top: 10px;
-    }
-
-    /* ── Main Container ── */
-    main {
-      flex: 1;
-      width: 100%;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 16px 60px;
-    }
-
-    /* ── Glass Cards ── */
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: var(--card-shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .panel-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.8);
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    /* ── Location Panel ── */
-    .location-panel {
-      max-width: 540px;
-      margin: 24px auto 0;
-    }
-
-    .presets-container {
-      margin-bottom: 18px;
-    }
-    .presets-title {
-      font-size: 11px;
-      font-family: var(--font-mono);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    .preset-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      justify-content: center;
-    }
-    .chip {
-      background: rgba(255, 255, 255, 0.18);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 6px 12px;
+      padding: 8px 15px;
       border-radius: 999px;
-      cursor: pointer;
-      transition: all 0.15s ease;
+      font-size: 13px;
+      font-weight: 800;
       font-family: var(--font-body);
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .chip:hover {
-      background: rgba(255, 255, 255, 0.32);
+
+    .locate-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
       transform: translateY(-1px);
     }
 
-    /* ── Buttons ── */
-    .btn {
-      display: flex;
+    .locate-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* ── Fun Tide Status Banner ── */
+    .tide-status-banner {
+      display: none; /* Hidden until measuring station data loads */
       align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 14px 24px;
-      border: none;
-      border-radius: 50px;
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 13px;
-      letter-spacing: 1px;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-      text-decoration: none;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.4);
-    }
-    .btn-primary:hover {
-      background: var(--primary-hover);
-      box-shadow: 0 8px 26px rgba(42, 157, 143, 0.55);
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.18);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      margin-top: 12px;
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.28);
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 22px;
+      border: 1px solid var(--surface-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: fadeInBanner 0.4s ease-out;
     }
 
-    /* ── Inputs ── */
-    .coords-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 14px;
-    }
-    .field {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .field label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.75);
-    }
-    .field input {
-      background: rgba(0, 0, 0, 0.22);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      border-radius: 12px;
-      padding: 10px 14px;
-      color: white;
-      font-family: var(--font-mono);
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.15s ease, background 0.15s ease;
-    }
-    .field input:focus {
-      border-color: var(--accent-teal);
-      background: rgba(0, 0, 0, 0.3);
-    }
-    .field input::placeholder {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    /* ── API Row ── */
-    .api-row {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-      margin-top: 16px;
-    }
-    .api-row .field { flex: 1; }
-    .api-save-btn {
-      padding: 11px 18px;
-      border-radius: 12px;
-      font-size: 11px;
-      white-space: nowrap;
-      width: auto;
-      margin-top: 0;
-    }
-    .api-hint {
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.6);
-      margin-top: 6px;
-      text-align: right;
-    }
-    .api-hint a {
-      color: #ffffff;
-      text-decoration: underline;
-    }
-
-    /* ── Status Message ── */
-    #status-msg {
-      text-align: center;
-      font-size: 12px;
-      font-family: var(--font-mono);
-      min-height: 20px;
-      margin-top: 14px;
-      color: rgba(255, 255, 255, 0.85);
-      transition: opacity 0.3s;
-    }
-    #status-msg.error { color: #ffb4b4; font-weight: 700; }
-    #status-msg.success { color: #b7ffeb; font-weight: 700; }
-
-    /* ── Results Container ── */
-    #results {
-      margin-top: 36px;
-      display: none;
-      animation: fadeIn 0.4s ease-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
+    @keyframes fadeInBanner {
+      from { opacity: 0; transform: translateY(-6px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .station-label {
-      text-align: center;
-      font-family: var(--font-mono);
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 8px;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    .tide-status-banner.coming-in {
+      background: linear-gradient(135deg, rgba(0, 245, 212, 0.22) 0%, rgba(0, 187, 249, 0.16) 100%);
+      border-color: rgba(0, 245, 212, 0.45);
     }
 
-    .verdict-container {
-      text-align: center;
-      margin: 10px 0 26px;
-    }
-    .verdict {
-      display: inline-block;
-      font-family: var(--font-display);
-      font-size: clamp(84px, 20vw, 140px);
-      background: linear-gradient(135deg, #fff275 0%, #ffd700 45%, #ff9e00 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 4px 28px rgba(255, 215, 0, 0.65));
-      letter-spacing: 8px;
-      line-height: 1;
-    }
-    .verdict-sub {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.9);
-      margin-top: 4px;
+    .tide-status-banner.going-out {
+      background: linear-gradient(135deg, rgba(255, 77, 109, 0.24) 0%, rgba(255, 186, 8, 0.16) 100%);
+      border-color: rgba(255, 77, 109, 0.45);
     }
 
-    /* ── Results Grid ── */
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
+    .tide-status-banner.slack {
+      background: linear-gradient(135deg, rgba(255, 186, 8, 0.24) 0%, rgba(247, 37, 133, 0.14) 100%);
+      border-color: rgba(255, 186, 8, 0.45);
     }
 
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-      gap: 12px;
+    .banner-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: flex;
       align-items: center;
-      text-align: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 24px;
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
     }
-    .stat-item {
-      background: rgba(0, 0, 0, 0.12);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 16px;
-      padding: 12px 8px;
+
+    .banner-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
-    .stat-icon {
-      font-size: 32px;
-      display: block;
-      margin-bottom: 4px;
+
+    .banner-title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      line-height: 1.2;
     }
-    .stat-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 2px;
-    }
-    .stat-value {
-      font-size: 20px;
-      font-weight: 700;
+
+    .coming-in .banner-title { color: #00f5d4; }
+    .going-out .banner-title { color: #ff758f; }
+    .slack .banner-title { color: #ffd166; }
+
+    .banner-desc {
+      font-size: 12px;
       color: #ffffff;
+      opacity: 0.9;
+      font-weight: 600;
     }
+
+    /* ── Main Tide Card ── */
+    .tide-card {
+      background: var(--surface);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--surface-border);
+      border-radius: 26px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .station-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .station-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+    }
+
+    .station-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .tide-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .tide-tag.rising {
+      background: rgba(0, 245, 212, 0.2);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 245, 212, 0.4);
+    }
+
+    .tide-tag.falling {
+      background: rgba(255, 77, 109, 0.2);
+      color: var(--hot-coral);
+      border: 1px solid rgba(255, 77, 109, 0.4);
+    }
+
+    .tide-tag.slack {
+      background: rgba(255, 186, 8, 0.2);
+      color: var(--sun-gold);
+      border: 1px solid rgba(255, 186, 8, 0.4);
+    }
+
+    /* ── Height Readout ── */
+    .height-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .height-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .height-num {
+      font-family: var(--font-display);
+      font-size: 60px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1;
+      color: #ffffff;
+      text-shadow: 0 4px 24px rgba(0, 245, 212, 0.35);
+    }
+
+    .height-unit {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--neon-cyan);
+    }
+
+    .height-rate {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    /* ── Lively Animated Wave Graphic Tank ── */
+    .graphic-frame {
+      width: 100%;
+      height: 230px;
+      background: linear-gradient(180deg, #150e2d 0%, #0c081e 100%);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.6);
+    }
+
+    #tide-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* ── Fun Stats Grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-box {
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--surface-border);
+      border-radius: 20px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
     .stat-sub {
       font-size: 11px;
-      color: rgba(255, 255, 255, 0.65);
-      margin-top: 2px;
+      color: var(--text-secondary);
+      font-weight: 600;
     }
 
-    /* ── Canvas ── */
-    #wave-canvas {
+    /* ── Sparkline Profile ── */
+    .chart-card {
+      background: var(--surface);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--surface-border);
+      border-radius: 22px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chart-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .chart-timeframe {
+      font-size: 11px;
+      color: var(--neon-cyan);
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .chart-wrap {
       width: 100%;
-      height: 380px;
-      border-radius: 24px;
-      display: block;
-      margin: 20px 0;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      height: 80px;
     }
 
-    /* ── Debug Drawer ── */
-    details {
-      margin-top: 14px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 16px;
-      padding: 8px 16px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    #history-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
+
+    /* ── Collapsible Coordinates ── */
+    .coords-section {
+      border: 1px solid var(--surface-border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 12px;
+      background: rgba(30, 21, 58, 0.5);
+    }
+
     summary {
       cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.75);
-      padding: 6px 0;
+      color: var(--text-secondary);
+      font-weight: 700;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       user-select: none;
     }
-    #debug-content {
-      background: rgba(10, 15, 25, 0.88);
-      color: var(--accent-teal);
-      border-radius: 12px;
-      padding: 16px;
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "⚙️ ▾";
+      font-size: 13px;
+    }
+
+    .coords-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 8px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .coords-inputs input {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 13px;
+      color: #ffffff;
       font-family: var(--font-mono);
-      font-size: 11px;
-      overflow-x: auto;
-      white-space: pre-wrap;
-      word-break: break-all;
-      margin: 10px 0 6px;
+      width: 100%;
+      outline: none;
     }
 
-    /* ── Spinner ── */
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid rgba(255, 255, 255, 0.35);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      margin-right: 8px;
+    .coords-inputs input:focus {
+      border-color: var(--neon-cyan);
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Footer */
-    footer {
+    .go-btn {
+      background: linear-gradient(135deg, var(--sky-azure), var(--neon-cyan));
+      border: none;
+      color: #0d1b2a;
+      padding: 8px 15px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* ── Status Toast ── */
+    #status-toast {
+      font-size: 12px;
+      color: var(--text-secondary);
       text-align: center;
-      padding: 20px;
-      font-size: 11px;
-      color: rgba(255, 255, 255, 0.65);
-      font-family: var(--font-mono);
-      letter-spacing: 1px;
+      min-height: 18px;
+      font-weight: 700;
     }
-    footer a { color: #ffffff; text-decoration: underline; }
+
+    #status-toast.error {
+      color: var(--hot-coral);
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      padding: 6px 0;
+    }
+
+    footer a {
+      color: var(--neon-cyan);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .spin {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--neon-cyan);
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    /* ── Loading Modal Overlay ── */
+    .loading-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(9, 6, 20, 0.75);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      padding: 20px;
+    }
+
+    .loading-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-modal-card {
+      background: rgba(30, 21, 58, 0.95);
+      border: 1px solid rgba(0, 245, 212, 0.4);
+      border-radius: 26px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      max-width: 320px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 245, 212, 0.2);
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .loading-modal-overlay.active .loading-modal-card {
+      transform: scale(1);
+    }
+
+    .loading-emoji {
+      font-size: 42px;
+      animation: bounceEmoji 1.5s ease-in-out infinite;
+    }
+
+    @keyframes bounceEmoji {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(6deg); }
+    }
+
+    .loading-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+    }
+
+    .loading-sub {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .loading-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .loading-bar-fill {
+      width: 45%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--hot-coral), var(--sun-gold));
+      border-radius: 999px;
+      animation: loadingSlide 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes loadingSlide {
+      0% { transform: translateX(-50%); width: 30%; }
+      100% { transform: translateX(250%); width: 45%; }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
 
-<header>
-  <div class="badge">🌊 Coastal Intel</div>
-  <h1>BEACH OR NAH?</h1>
-  <p class="subtitle">Live UK Tides, Weather &amp; Wave Conditions</p>
-</header>
-
-<main>
-  <!-- Location & Controls Card -->
-  <div class="location-panel">
-    <div class="card">
-      <p class="panel-label">📍 Choose Your Beach</p>
-
-      <!-- Quick presets -->
-      <div class="presets-container">
-        <div class="presets-title">Popular Beaches</div>
-        <div class="preset-chips" id="preset-chips">
-          <button class="chip" data-lat="50.7184" data-lon="-1.8795" data-name="Bournemouth">🏖️ Bournemouth</button>
-          <button class="chip" data-lat="50.8225" data-lon="-0.1372" data-name="Brighton">🏖️ Brighton</button>
-          <button class="chip" data-lat="50.2115" data-lon="-5.4800" data-name="St Ives">🏖️ St Ives</button>
-          <button class="chip" data-lat="52.4767" data-lon="1.7514" data-name="Lowestoft">🏖️ Lowestoft</button>
-          <button class="chip" data-lat="54.2831" data-lon="-0.3998" data-name="Scarborough">🏖️ Scarborough</button>
-          <button class="chip" data-lat="53.8175" data-lon="-3.0357" data-name="Blackpool">🏖️ Blackpool</button>
-        </div>
+<div class="app-shell">
+  <!-- Loading Modal Overlay -->
+  <div class="loading-modal-overlay" id="loading-modal" aria-live="polite">
+    <div class="loading-modal-card">
+      <div class="loading-emoji" id="loading-emoji">🌊</div>
+      <div class="loading-title" id="loading-title">Checking the Tides…</div>
+      <div class="loading-sub" id="loading-sub">Finding nearest measuring station</div>
+      <div class="loading-bar-wrap">
+        <div class="loading-bar-fill"></div>
       </div>
-
-      <!-- Geolocation button -->
-      <button class="btn btn-primary" id="geo-btn">📍 Use My Current Location</button>
-
-      <!-- Manual coordinates -->
-      <div class="coords-row">
-        <div class="field">
-          <label>Latitude</label>
-          <input type="number" id="lat-input" step="0.0001" value="52.4767" placeholder="52.4767" />
-        </div>
-        <div class="field">
-          <label>Longitude</label>
-          <input type="number" id="lon-input" step="0.0001" value="1.7514" placeholder="1.7514" />
-        </div>
-      </div>
-
-      <!-- Optional OpenWeather key -->
-      <div class="api-row">
-        <div class="field">
-          <label>OpenWeather API Key (Optional)</label>
-          <input type="password" id="ow-key" placeholder="Automatic Open-Meteo fallback" />
-        </div>
-        <button class="btn btn-secondary api-save-btn" id="save-key-btn">Save</button>
-      </div>
-      <p class="api-hint">Uses Open-Meteo by default — <a href="https://openweathermap.org/api" target="_blank" rel="noopener">OpenWeather key</a> optional</p>
-
-      <!-- Status message -->
-      <div id="status-msg"></div>
-
-      <!-- Main action button -->
-      <button class="btn btn-secondary" id="check-btn" style="margin-top:16px;">🌊 Check Conditions</button>
     </div>
   </div>
 
-  <!-- Results Section -->
-  <section id="results" aria-live="polite">
-    <p class="station-label" id="station-label"></p>
-    
-    <div class="verdict-container">
-      <div class="verdict" id="verdict-text">BEACH!</div>
-      <div class="verdict-sub" id="verdict-sub"></div>
+  <!-- Fun Top Header -->
+  <header class="top-bar">
+    <div class="app-brand">
+      <div class="brand-icon-bubble">🏖️</div>
+      <span class="brand-title">Beach or Nah?</span>
+    </div>
+    <button class="locate-btn" id="geo-btn" aria-label="Find nearest coastal station">
+      <span>📍</span>
+      <span>Near Me</span>
+    </button>
+  </header>
+
+  <!-- Big Fun Tide Status Banner -->
+  <div class="tide-status-banner coming-in" id="tide-banner">
+    <div class="banner-icon" id="banner-icon">🌊</div>
+    <div class="banner-text">
+      <div class="banner-title" id="banner-title">Tide Coming In!</div>
+      <div class="banner-desc" id="banner-desc">Water creeping up (~0.25 m/hr)</div>
+    </div>
+  </div>
+
+  <!-- Hero Tide Level Card -->
+  <section class="tide-card" id="tide-card">
+    <div class="station-header">
+      <div>
+        <h1 class="station-title" id="station-name">Finding Beach…</h1>
+        <p class="station-meta" id="station-meta">Environment Agency Tide Gauge</p>
+      </div>
+      <div class="tide-tag rising" id="trend-tag">
+        <span id="trend-icon">↑</span>
+        <span id="trend-text">Rising</span>
+      </div>
     </div>
 
-    <!-- Weather & Tide Cards Grid -->
-    <div class="results-grid">
-      <!-- Weather Card -->
-      <div class="card" id="weather-panel">
-        <p class="panel-label" id="weather-title">🌤️ Current Weather</p>
-        <div class="stat-grid" id="weather-grid"></div>
+    <div class="height-wrap">
+      <div class="height-row">
+        <span class="height-num" id="height-num">--</span>
+        <span class="height-unit" id="height-unit">m</span>
       </div>
-
-      <!-- Tide Card -->
-      <div class="card" id="tide-panel">
-        <p class="panel-label" id="tide-title">🌊 Tide Conditions</p>
-        <div class="stat-grid" id="tide-grid"></div>
-      </div>
+      <div class="height-rate" id="height-rate">Connecting to station telemetry…</div>
     </div>
 
-    <!-- Live Animated Wave Canvas -->
-    <canvas id="wave-canvas" width="800" height="380"></canvas>
-
-    <!-- API Debug Drawer -->
-    <details>
-      <summary>📡 API &amp; Sensor Data</summary>
-      <pre id="debug-content"></pre>
-    </details>
+    <!-- Lively Wave Tank Canvas -->
+    <div class="graphic-frame">
+      <canvas id="tide-canvas"></canvas>
+    </div>
   </section>
-</main>
 
-<footer>
-  <p>Powered by UK Environment Agency &amp; Open-Meteo • <a href="https://github.com/aransmithson/beach-or-nah" target="_blank" rel="noopener">GitHub</a></p>
-</footer>
+  <!-- Fun Stats Grid -->
+  <section class="stats-grid">
+    <div class="stat-box">
+      <span class="stat-label">Last Reading</span>
+      <span class="stat-value" id="stat-time">--:--</span>
+      <span class="stat-sub" id="stat-date">Today</span>
+    </div>
 
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js"
-  data-cf-beacon='{"token": "7eb348d6a4d64d1595ba7ed828a4ad13"}'></script>
+    <div class="stat-box">
+      <span class="stat-label">15-Min Change</span>
+      <span class="stat-value" id="stat-change">--</span>
+      <span class="stat-sub" id="stat-change-sub">Recent flow</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Tidal State</span>
+      <span class="stat-value" id="stat-state">--</span>
+      <span class="stat-sub" id="stat-state-sub">Current flow</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Beach Distance</span>
+      <span class="stat-value" id="stat-dist">-- km</span>
+      <span class="stat-sub" id="stat-dist-sub">Nearest gauge</span>
+    </div>
+  </section>
+
+  <!-- 2-Hour Trend Curve -->
+  <section class="chart-card">
+    <div class="chart-header">
+      <span class="chart-title">Water Level Momentum</span>
+      <span class="chart-timeframe">Past 2 Hours</span>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="history-canvas"></canvas>
+    </div>
+  </section>
+
+  <!-- Custom Coordinates -->
+  <details class="coords-section">
+    <summary>Custom coordinates lookup</summary>
+    <div class="coords-inputs">
+      <input type="number" id="lat-in" step="0.0001" placeholder="Lat (e.g. 50.71)" value="50.7184" />
+      <input type="number" id="lon-in" step="0.0001" placeholder="Lon (e.g. -1.87)" value="-1.8795" />
+      <button class="go-btn" id="go-btn">Go</button>
+    </div>
+  </details>
+
+  <div id="status-toast"></div>
+
+  <footer>
+    <p>Beach or Nah? • Live UK Environment Agency Open Data</p>
+  </footer>
+</div>
 
 <script>
-// ─── App State ─────────────────────────────────────────────────────────────────
+// ─── State ───────────────────────────────────────────────────────────────────
 const state = {
-  lat: 52.4767,
-  lon: 1.7514,
-  locationName: 'Lowestoft',
+  lat: 50.7184,
+  lon: -1.8795,
+  name: 'Bournemouth',
+  stations: null,
   station: null,
-  tideData: null,
-  weatherData: null,
-  animFrame: null
+  readings: [],
+  height: 0,
+  unit: 'm',
+  isRising: false,
+  ratePerHour: 0,
+  animId: null
 };
 
-// ─── DOM References ───────────────────────────────────────────────────────────
-const geoBtn      = document.getElementById('geo-btn');
-const checkBtn    = document.getElementById('check-btn');
-const latInput    = document.getElementById('lat-input');
-const lonInput    = document.getElementById('lon-input');
-const owKeyEl     = document.getElementById('ow-key');
-const saveKeyBtn  = document.getElementById('save-key-btn');
-const statusEl    = document.getElementById('status-msg');
-const resultsEl   = document.getElementById('results');
-const verdictEl   = document.getElementById('verdict-text');
-const verdictSubEl= document.getElementById('verdict-sub');
-const stationLbl  = document.getElementById('station-label');
-const weatherPanel= document.getElementById('weather-panel');
-const weatherGrid = document.getElementById('weather-grid');
-const weatherTitle= document.getElementById('weather-title');
-const tideGrid    = document.getElementById('tide-grid');
-const tideTitle   = document.getElementById('tide-title');
-const debugEl     = document.getElementById('debug-content');
-const canvas      = document.getElementById('wave-canvas');
-const ctx         = canvas.getContext('2d');
-const presetChips = document.getElementById('preset-chips');
+// ─── Elements ────────────────────────────────────────────────────────────────
+const geoBtn         = document.getElementById('geo-btn');
+const loadingModalEl = document.getElementById('loading-modal');
+const loadingEmojiEl = document.getElementById('loading-emoji');
+const loadingTitleEl = document.getElementById('loading-title');
+const loadingSubEl   = document.getElementById('loading-sub');
 
-// ─── Preset Beach Chips ───────────────────────────────────────────────────────
-presetChips.addEventListener('click', e => {
-  const chip = e.target.closest('.chip');
-  if (!chip) return;
-  const lat = parseFloat(chip.dataset.lat);
-  const lon = parseFloat(chip.dataset.lon);
-  latInput.value = lat;
-  lonInput.value = lon;
-  state.lat = lat;
-  state.lon = lon;
-  state.locationName = chip.dataset.name;
-  setStatus(`📍 Selected ${chip.dataset.name}`, 'success');
-  checkConditions();
-});
+const tideBannerEl   = document.getElementById('tide-banner');
+const bannerIconEl   = document.getElementById('banner-icon');
+const bannerTitleEl  = document.getElementById('banner-title');
+const bannerDescEl   = document.getElementById('banner-desc');
 
-// ─── Persist API Key ──────────────────────────────────────────────────────────
-owKeyEl.value = localStorage.getItem('ow_api_key') || '';
-saveKeyBtn.addEventListener('click', () => {
-  const k = owKeyEl.value.trim();
-  if (k) {
-    localStorage.setItem('ow_api_key', k);
-    setStatus('✅ OpenWeather API key saved', 'success');
-  } else {
-    localStorage.removeItem('ow_api_key');
-    setStatus('OpenWeather key cleared (using Open-Meteo)', '');
-  }
-});
+const stationNameEl = document.getElementById('station-name');
+const stationMetaEl = document.getElementById('station-meta');
+const trendTagEl    = document.getElementById('trend-tag');
+const trendIconEl   = document.getElementById('trend-icon');
+const trendTextEl   = document.getElementById('trend-text');
+const heightNumEl   = document.getElementById('height-num');
+const heightUnitEl  = document.getElementById('height-unit');
+const heightRateEl  = document.getElementById('height-rate');
 
-// ─── Helper Functions ─────────────────────────────────────────────────────────
-function setStatus(msg, type = '') {
-  statusEl.textContent = msg;
-  statusEl.className = type;
-}
+const statTimeEl    = document.getElementById('stat-time');
+const statDateEl    = document.getElementById('stat-date');
+const statChangeEl  = document.getElementById('stat-change');
+const statStateEl   = document.getElementById('stat-state');
+const statDistEl    = document.getElementById('stat-dist');
+const statusToast   = document.getElementById('status-toast');
 
+const latInput      = document.getElementById('lat-in');
+const lonInput      = document.getElementById('lon-in');
+const goBtn         = document.getElementById('go-btn');
+
+const canvas        = document.getElementById('tide-canvas');
+const ctx           = canvas.getContext('2d');
+const chartCanvas   = document.getElementById('history-canvas');
+const chartCtx      = chartCanvas.getContext('2d');
+
+// ─── Math & Geodesy ──────────────────────────────────────────────────────────
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371, toR = Math.PI / 180;
   const dLat = (lat2 - lat1) * toR, dLon = (lon2 - lon1) * toR;
@@ -598,544 +801,435 @@ function haversine(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function windDir(deg) {
-  return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(deg / 45) % 8];
+function showStatus(msg, isError = false) {
+  statusToast.textContent = msg;
+  statusToast.className = isError ? 'error' : '';
 }
 
-function wmoCodeToDetails(code) {
-  if (code === 0) return { desc: 'Clear Sky', icon: '☀️', condition: 'Clear' };
-  if (code === 1) return { desc: 'Mainly Clear', icon: '🌤️', condition: 'Clear' };
-  if (code === 2) return { desc: 'Partly Cloudy', icon: '⛅', condition: 'Clouds' };
-  if (code === 3) return { desc: 'Overcast', icon: '☁️', condition: 'Clouds' };
-  if ([45, 48].includes(code)) return { desc: 'Foggy', icon: '🌫️', condition: 'Fog' };
-  if ([51, 53, 55, 56, 57].includes(code)) return { desc: 'Drizzle', icon: '🌦️', condition: 'Drizzle' };
-  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { desc: 'Rain', icon: '🌧️', condition: 'Rain' };
-  if ([71, 73, 75, 77, 85, 86].includes(code)) return { desc: 'Snow', icon: '❄️', condition: 'Snow' };
-  if ([95, 96, 99].includes(code)) return { desc: 'Thunderstorm', icon: '⛈️', condition: 'Thunderstorm' };
-  return { desc: 'Fair', icon: '🌤️', condition: 'Clear' };
-}
-
-// ─── Reverse Geocoding ────────────────────────────────────────────────────────
-async function reverseGeocode(lat, lon) {
-  try {
-    const res = await fetch(
-      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`
-    );
-    if (!res.ok) return null;
-    const d = await res.json();
-    return d.locality || d.city || d.principalSubdivision || null;
-  } catch {
-    return null;
-  }
-}
-
-// ─── Geolocation ──────────────────────────────────────────────────────────────
-geoBtn.addEventListener('click', () => {
-  if (!navigator.geolocation) {
-    setStatus('Geolocation not supported — enter manually', 'error');
+// ─── Location Handling ───────────────────────────────────────────────────────
+goBtn.addEventListener('click', () => {
+  const lat = parseFloat(latInput.value);
+  const lon = parseFloat(lonInput.value);
+  if (isNaN(lat) || isNaN(lon)) {
+    showStatus('Please enter valid coordinates', true);
     return;
   }
-  geoBtn.innerHTML = '<span class="spinner"></span>Getting location…';
+  state.lat = lat;
+  state.lon = lon;
+  state.name = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+  loadData();
+});
+
+function detectLocation(isInitial = false) {
+  showLoading('Detecting Your Location…', 'Finding the nearest coastal measuring station…', '📍');
+
+  if (!navigator.geolocation) {
+    if (!isInitial) showStatus('Geolocation not supported on this browser', true);
+    loadData();
+    return;
+  }
+
+  geoBtn.innerHTML = '<span class="spin"></span> Locating…';
   geoBtn.disabled = true;
 
   navigator.geolocation.getCurrentPosition(
-    async pos => {
+    pos => {
       state.lat = pos.coords.latitude;
       state.lon = pos.coords.longitude;
+      state.name = 'Your Location';
       latInput.value = state.lat.toFixed(4);
       lonInput.value = state.lon.toFixed(4);
       
-      const city = await reverseGeocode(state.lat, state.lon);
-      state.locationName = city || `${state.lat.toFixed(2)}, ${state.lon.toFixed(2)}`;
-      setStatus(`✅ Location: ${state.locationName}`, 'success');
-      geoBtn.innerHTML = '📍 Use My Current Location';
+      geoBtn.innerHTML = '<span>📍</span><span>Near Me</span>';
       geoBtn.disabled = false;
-      checkConditions();
+      loadData();
     },
     err => {
-      setStatus('⚠️ Location permission denied — enter coordinates manually', 'error');
-      geoBtn.innerHTML = '📍 Use My Current Location';
+      if (!isInitial) {
+        showStatus('Location permission denied — using nearest coastal station', true);
+      }
+      geoBtn.innerHTML = '<span>📍</span><span>Near Me</span>';
       geoBtn.disabled = false;
+      loadData();
     },
-    { timeout: 10000 }
+    { timeout: 7000 }
   );
-});
-
-// ─── Main Check Trigger ───────────────────────────────────────────────────────
-checkBtn.addEventListener('click', () => checkConditions());
-
-async function checkConditions() {
-  const lat = parseFloat(latInput.value || latInput.placeholder || 52.4767);
-  const lon = parseFloat(lonInput.value || lonInput.placeholder || 1.7514);
-  if (isNaN(lat) || isNaN(lon)) {
-    setStatus('⚠️ Please enter valid numeric coordinates', 'error');
-    return;
-  }
-
-  state.lat = lat;
-  state.lon = lon;
-
-  checkBtn.innerHTML = '<span class="spinner"></span>Finding your nearest beach…';
-  checkBtn.disabled = true;
-  setStatus('');
-
-  try {
-    const [station, weather, geoname] = await Promise.all([
-      findNearestStation(lat, lon),
-      fetchWeather(lat, lon),
-      reverseGeocode(lat, lon)
-    ]);
-
-    if (!station) throw new Error('No tide station found near your location');
-    state.station = station;
-    state.weatherData = weather;
-    state.locationName = geoname || weather?.city || station.name;
-
-    const tide = await fetchTide(station.id);
-    if (!tide) throw new Error(`No recent tide readings found for ${station.name}`);
-    state.tideData = tide;
-
-    renderResults();
-  } catch (e) {
-    setStatus(`❌ ${e.message}`, 'error');
-  } finally {
-    checkBtn.innerHTML = '🌊 Check Conditions';
-    checkBtn.disabled = false;
-  }
 }
 
-// ─── API: UK Tide Stations ────────────────────────────────────────────────────
-async function findNearestStation(lat, lon) {
-  const res = await fetch(
-    'https://environment.data.gov.uk/flood-monitoring/id/stations?type=TideGauge&_limit=1000'
-  );
-  if (!res.ok) throw new Error(`Environment Agency API error: ${res.status}`);
-  const data = await res.json();
-  if (!data.items?.length) return null;
+geoBtn.addEventListener('click', () => detectLocation(false));
 
+// ─── API Fetching ────────────────────────────────────────────────────────────
+async function getStations() {
+  if (state.stations && state.stations.length) return state.stations;
+  const res = await fetch('https://environment.data.gov.uk/flood-monitoring/id/stations?type=TideGauge&_limit=1000');
+  if (!res.ok) throw new Error('Could not fetch stations');
+  const d = await res.json();
+  state.stations = (d.items || []).filter(s => s.lat != null && s.long != null);
+  return state.stations;
+}
+
+async function fetchStationData() {
+  const stations = await getStations();
   let best = null, minDist = Infinity;
-  for (const s of data.items) {
-    if (s.lat == null || s.long == null) continue;
-    const d = haversine(lat, lon, s.lat, s.long);
-    if (d < minDist) {
-      minDist = d;
-      best = {
-        id: s.stationReference || s.notation,
-        name: s.label,
-        lat: s.lat,
-        lon: s.long,
-        distance: d
+
+  for (const s of stations) {
+    const dist = haversine(state.lat, state.lon, s.lat, s.long);
+    if (dist < minDist) {
+      minDist = dist;
+      best = { ...s, dist };
+    }
+  }
+
+  if (!best) throw new Error('No tide station found');
+  state.station = best;
+
+  // Fetch readings from measures
+  for (const m of (best.measures || [])) {
+    const mid = m['@id'] || '';
+    if (mid) {
+      const url = mid.replace(/^http:/, 'https:') + '/readings?_sorted&_limit=12';
+      try {
+        const r = await fetch(url);
+        if (r.ok) {
+          const data = await r.json();
+          if (data.items && data.items.length) {
+            return {
+              unit: m.unitName || 'm',
+              items: data.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+            };
+          }
+        }
+      } catch (e) {}
+    }
+  }
+
+  // Fallback: station notation
+  const notUrl = `https://environment.data.gov.uk/flood-monitoring/id/stations/${best.notation || best.stationReference}/readings?_sorted&_limit=12`;
+  const r2 = await fetch(notUrl);
+  if (r2.ok) {
+    const data2 = await r2.json();
+    if (data2.items && data2.items.length) {
+      return {
+        unit: 'm',
+        items: data2.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
       };
     }
   }
-  return best;
+
+  throw new Error(`No recent readings for ${best.label}`);
 }
 
-// ─── API: Tide Readings ───────────────────────────────────────────────────────
-async function fetchTide(stationId) {
+function showLoading(title = 'Checking the Tides…', sub = 'Finding nearest measuring station', emoji = '🌊') {
+  loadingTitleEl.textContent = title;
+  loadingSubEl.textContent = sub;
+  loadingEmojiEl.textContent = emoji;
+  loadingModalEl.classList.add('active');
+  tideBannerEl.style.display = 'none'; // Ensure banner remains hidden while loading
+}
+
+function hideLoading() {
+  loadingModalEl.classList.remove('active');
+}
+
+async function loadData() {
+  showLoading('Checking the Tides…', 'Connecting to Environment Agency gauge…');
   try {
-    const url = `https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}/readings?_sorted&_limit=10`;
-    const res = await fetch(url);
-    if (res.ok) {
-      const data = await res.json();
-      if (data.items?.length >= 2) {
-        const sorted = data.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
-        const [latest, prev] = sorted;
-        return {
-          current: latest.value,
-          previous: prev.value,
-          time: latest.dateTime,
-          rising: latest.value >= prev.value,
-          raw: data
-        };
-      } else if (data.items?.length === 1) {
-        const latest = data.items[0];
-        return {
-          current: latest.value,
-          previous: latest.value,
-          time: latest.dateTime,
-          rising: false,
-          raw: data
-        };
-      }
-    }
+    const res = await fetchStationData();
+    state.readings = res.items;
+    state.unit = res.unit;
+
+    const latest = state.readings[0];
+    const prev = state.readings[1] || latest;
+    state.height = latest.value;
+
+    const diff = latest.value - prev.value;
+    state.isRising = diff > 0.005;
+    const isFalling = diff < -0.005;
+    const isSlack = !state.isRising && !isFalling;
+    state.ratePerHour = diff * 4;
+
+    updateUI(latest, prev, isSlack);
+    hideLoading();
+    showStatus('');
   } catch (err) {
-    console.warn('Direct tide reading failed, trying fallback measures...', err);
-  }
-
-  // Fallback: station measures
-  try {
-    const sRes = await fetch(`https://environment.data.gov.uk/flood-monitoring/id/stations/${stationId}`);
-    const sData = await sRes.json();
-    for (const m of (sData.measures || [])) {
-      const mid = m['@id'] || '';
-      if (!mid.toLowerCase().includes('level') && !mid.toLowerCase().includes('tidal')) continue;
-      const rRes = await fetch(`${mid}/readings?_sorted&_limit=10`);
-      const rData = await rRes.json();
-      if (rData.items?.length >= 1) {
-        const sorted = rData.items.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime));
-        const latest = sorted[0];
-        const prev = sorted[1] || latest;
-        return {
-          current: latest.value,
-          previous: prev.value,
-          time: latest.dateTime,
-          rising: latest.value >= prev.value,
-          raw: rData
-        };
-      }
-    }
-  } catch (err) {
-    console.warn('Fallback measure lookup failed:', err);
-  }
-  return null;
-}
-
-// ─── API: Weather (OpenWeather or Open-Meteo) ──────────────────────────────────
-async function fetchWeather(lat, lon) {
-  const owKey = owKeyEl.value.trim() || localStorage.getItem('ow_api_key');
-  if (owKey) {
-    try {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${owKey}&units=metric`
-      );
-      if (res.ok) {
-        const d = await res.json();
-        return {
-          source: 'OpenWeather',
-          temp: d.main.temp,
-          feelsLike: d.main.feels_like,
-          humidity: d.main.humidity,
-          windSpeed: d.wind.speed * 3.6,
-          windDeg: d.wind.deg || 0,
-          description: d.weather[0].description.replace(/\b\w/g, c => c.toUpperCase()),
-          condition: d.weather[0].main,
-          icon: d.weather[0].icon,
-          city: d.name || '',
-          visibility: (d.visibility || 10000) / 1000,
-          raw: d
-        };
-      }
-    } catch (e) {
-      console.warn('OpenWeather request failed, falling back to Open-Meteo:', e);
-    }
-  }
-
-  // Automatic Open-Meteo Fallback (No Key Required)
-  try {
-    const res = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m`
-    );
-    if (!res.ok) throw new Error(`Open-Meteo status ${res.status}`);
-    const d = await res.json();
-    const curr = d.current;
-    const codeInfo = wmoCodeToDetails(curr.weather_code);
-    return {
-      source: 'Open-Meteo',
-      temp: curr.temperature_2m,
-      feelsLike: curr.apparent_temperature,
-      humidity: curr.relative_humidity_2m,
-      windSpeed: curr.wind_speed_10m,
-      windDeg: curr.wind_direction_10m || 0,
-      description: codeInfo.desc,
-      condition: codeInfo.condition,
-      icon: codeInfo.icon,
-      city: '',
-      visibility: 10,
-      raw: d
-    };
-  } catch (e) {
-    console.warn('Weather fetch failed:', e);
-    return null;
+    console.error(err);
+    hideLoading();
+    showStatus(err.message, true);
   }
 }
 
-// ─── Verdict Logic ────────────────────────────────────────────────────────────
-function getVerdict(waterPct, rising, weather) {
-  let v = waterPct < 30 ? 'BEACH!'
-        : waterPct < 60 && !rising ? 'BEACH!'
-        : waterPct > 70 ? 'NAH.'
-        : 'MAYBE?';
+// ─── Update UI ───────────────────────────────────────────────────────────────
+function updateUI(latest, prev, isSlack) {
+  const st = state.station;
+  stationNameEl.textContent = st.label || state.name;
+  stationMetaEl.textContent = `📍 ${st.dist.toFixed(1)} km away • Environment Agency Gauge`;
 
-  let reason = '';
-  if (waterPct < 30) reason = 'Low tide — wide open sand!';
-  else if (waterPct < 60 && !rising) reason = 'Tide is receding, great beach coverage!';
-  else if (waterPct > 70) reason = 'High tide — limited sand space.';
-  else reason = 'Moderate tide level.';
+  // Height
+  heightNumEl.textContent = state.height.toFixed(2);
+  heightUnitEl.textContent = state.unit;
 
-  if (weather) {
-    const bad = ['Thunderstorm', 'Rain', 'Drizzle', 'Snow'];
-    if (bad.includes(weather.condition)) {
-      v = 'NAH.';
-      reason = `${weather.description} incoming!`;
-    } else if (weather.windSpeed > 50) {
-      v = 'NAH.';
-      reason = `Heavy gale winds (${Math.round(weather.windSpeed)} km/h)!`;
-    } else if (weather.windSpeed > 35 && v === 'BEACH!') {
-      v = 'MAYBE?';
-      reason = `Breezy conditions (${Math.round(weather.windSpeed)} km/h).`;
-    } else if (weather.temp < 10) {
-      v = 'NAH.';
-      reason = `Too chilly (${Math.round(weather.temp)}°C).`;
-    } else if (weather.temp < 15 && v === 'BEACH!') {
-      v = 'MAYBE?';
-      reason = `A bit cool (${Math.round(weather.temp)}°C) — bring layers!`;
-    }
-  }
+  // Banner & Trend Updating
+  const rateAbs = Math.abs(state.ratePerHour).toFixed(2);
 
-  return { verdict: v, reason };
-}
+  if (isSlack) {
+    // Banner
+    tideBannerEl.className = 'tide-status-banner slack';
+    bannerIconEl.textContent = '☀️';
+    bannerTitleEl.textContent = 'Slack Tide (Chill Vibes)';
+    bannerDescEl.textContent = 'Water level is calm & steady right now';
 
-// ─── Render Results ───────────────────────────────────────────────────────────
-function renderResults() {
-  const { station, tideData, weatherData, locationName } = state;
-  const maxH = 7.5;
-  const waterPct = Math.min(Math.max((tideData.current / maxH) * 100, 0), 100);
+    // Tags & readouts
+    trendTagEl.className = 'tide-tag slack';
+    trendIconEl.textContent = '—';
+    trendTextEl.textContent = 'Slack';
+    heightRateEl.textContent = 'Water level is steady (turn of the tide)';
+    statStateEl.textContent = 'Slack Tide';
+  } else if (state.isRising) {
+    // Banner
+    tideBannerEl.className = 'tide-status-banner coming-in';
+    bannerIconEl.textContent = '🌊';
+    bannerTitleEl.textContent = 'Tide Coming In!';
+    bannerDescEl.textContent = `Water creeping up (~${rateAbs} m/hr) • High tide incoming`;
 
-  // Station & Location
-  const place = locationName || station.name;
-  stationLbl.textContent = `🏖️ ${place} • Station: ${station.name} (${station.distance.toFixed(1)}km away)`;
-
-  // Verdict
-  const verdictObj = getVerdict(waterPct, tideData.rising, weatherData);
-  verdictEl.textContent = verdictObj.verdict;
-  verdictSubEl.textContent = verdictObj.reason;
-
-  // Weather Card
-  if (weatherData) {
-    const w = weatherData;
-    weatherTitle.textContent = `🌤️ Weather — ${place}`;
-    const icon = w.icon.startsWith('http') || w.icon.length <= 4 ? w.icon : '🌤️';
-    weatherGrid.innerHTML = `
-      <div class="stat-item">
-        <span class="stat-icon">${icon}</span>
-        <div class="stat-value" style="font-size:15px;">${w.description}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">Temp</div>
-        <div class="stat-value">${Math.round(w.temp)}°C</div>
-        <div class="stat-sub">feels ${Math.round(w.feelsLike)}°C</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">Wind</div>
-        <div class="stat-value">${Math.round(w.windSpeed)} km/h</div>
-        <div class="stat-sub">${windDir(w.windDeg)}</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">Humidity</div>
-        <div class="stat-value">${w.humidity}%</div>
-      </div>
-    `;
-    weatherPanel.style.display = '';
+    // Tags & readouts
+    trendTagEl.className = 'tide-tag rising';
+    trendIconEl.textContent = '↑';
+    trendTextEl.textContent = 'Coming In';
+    heightRateEl.textContent = `Rising ~${rateAbs} m/hr (flood tide)`;
+    statStateEl.textContent = 'Flooding In 🌊';
   } else {
-    weatherPanel.style.display = 'none';
+    // Banner
+    tideBannerEl.className = 'tide-status-banner going-out';
+    bannerIconEl.textContent = '🏖️';
+    bannerTitleEl.textContent = 'Tide Going Out!';
+    bannerDescEl.textContent = `More sand uncovering (~${rateAbs} m/hr) • Great for a walk!`;
+
+    // Tags & readouts
+    trendTagEl.className = 'tide-tag falling';
+    trendIconEl.textContent = '↓';
+    trendTextEl.textContent = 'Going Out';
+    heightRateEl.textContent = `Falling ~${rateAbs} m/hr (ebb tide)`;
+    statStateEl.textContent = 'Ebbing Out 🏖️';
   }
 
-  // Tide Card
-  const dir = tideData.rising ? 'Rising ⬆️' : 'Falling ⬇️';
-  const tideTime = new Date(tideData.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  tideTitle.textContent = `🌊 Tide Gauge — ${station.name}`;
-  tideGrid.innerHTML = `
-    <div class="stat-item"><div class="stat-label">Tide Status</div><div class="stat-value">${dir}</div></div>
-    <div class="stat-item"><div class="stat-label">Water Height</div><div class="stat-value">${tideData.current.toFixed(2)}m</div></div>
-    <div class="stat-item"><div class="stat-label">Beach Cover</div><div class="stat-value">${Math.round(waterPct)}%</div></div>
-    <div class="stat-item"><div class="stat-label">Last Reading</div><div class="stat-value">${tideTime}</div></div>
-  `;
+  // Reveal the Tide Status Banner now that real data has arrived
+  tideBannerEl.style.display = 'flex';
 
-  // API Debug Drawer
-  debugEl.textContent = JSON.stringify({
-    coordinates: { lat: state.lat, lon: state.lon },
-    locality: locationName,
-    nearestStation: station,
-    tideReading: tideData,
-    weather: weatherData
-  }, null, 2);
+  // Quick stats
+  const t = new Date(latest.dateTime);
+  statTimeEl.textContent = t.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  statDateEl.textContent = t.toLocaleDateString([], { month: 'short', day: 'numeric' });
 
-  // Reveal results
-  resultsEl.style.display = 'block';
-  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const delta = latest.value - prev.value;
+  statChangeEl.textContent = `${delta >= 0 ? '+' : ''}${delta.toFixed(3)} ${state.unit}`;
+  statDistEl.textContent = `${st.dist.toFixed(1)} km`;
 
-  // Start animated wave canvas
-  startWaves(waterPct, tideData.rising, weatherData);
+  // Render Graphics
+  renderWaveGraphic();
+  renderHistoryChart();
 }
 
-// ─── Live Wave Canvas Animation ───────────────────────────────────────────────
-function startWaves(waterPct, rising, weather) {
-  if (state.animFrame) cancelAnimationFrame(state.animFrame);
+// ─── Playful Animated Wave Canvas ─────────────────────────────────────────────
+function renderWaveGraphic() {
+  if (state.animId) cancelAnimationFrame(state.animId);
 
   const resize = () => {
-    canvas.width = canvas.offsetWidth * (window.devicePixelRatio || 1);
-    canvas.height = 380 * (window.devicePixelRatio || 1);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
   };
   resize();
-  window.addEventListener('resize', resize);
 
-  const wind = weather?.windSpeed || 12;
-  const condition = weather?.condition || 'Clear';
-  const stormy = ['Thunderstorm', 'Rain'].includes(condition);
-  const rainy = ['Rain', 'Drizzle'].includes(condition);
+  const values = state.readings.map(r => r.value);
+  const minVal = Math.min(...values, 0);
+  const maxVal = Math.max(...values, 6);
+  const span = Math.max(maxVal - minVal + 1.2, 3.5);
 
-  const amp = 24 + (waterPct / 100) * 55 + Math.min(wind / 55, 1) * 26;
-  const layers = stormy ? 5 : rainy ? 4 : 3;
+  let tick = 0;
 
-  const skyPalette = stormy ? ['#22222e', '#3a3a4e'] :
-                     rainy  ? ['#7a8fa6', '#b0c4d8'] :
-                     condition === 'Clouds' ? ['#9ab8cc', '#cce0ef'] :
-                                             ['#6ec6ea', '#f4dfc0'];
-  const showSun = !stormy && !rainy && condition !== 'Clouds';
+  function loop() {
+    const W = canvas.width;
+    const H = canvas.height;
+    const dpr = window.devicePixelRatio || 1;
 
-  // Animated seagulls
-  const dpr = window.devicePixelRatio || 1;
-  const birds = Array.from({ length: wind > 20 ? 4 : 2 }, () => ({
-    x: Math.random() * 2000,
-    y: 0.08 + Math.random() * 0.18,
-    speed: (0.6 + Math.random() * 0.6 + wind * 0.015) * dpr,
-    amp: 8 + Math.random() * 12,
-    freq: 0.015 + Math.random() * 0.01,
-    phase: Math.random() * Math.PI * 2,
-    size: (7 + Math.random() * 4) * dpr
-  }));
-
-  let t = 0;
-
-  function render() {
-    const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
-    const ampD = amp * dpr;
 
-    // 1. Sky Gradient
-    const skyGrad = ctx.createLinearGradient(0, 0, 0, H * 0.58);
-    skyGrad.addColorStop(0, skyPalette[0]);
-    skyGrad.addColorStop(1, skyPalette[1]);
-    ctx.fillStyle = skyGrad;
-    ctx.fillRect(0, 0, W, H);
+    // Map tide height to baseline Y
+    const norm = (state.height - minVal) / span;
+    const clamped = Math.min(Math.max(norm, 0.20), 0.80);
+    const waterY = H * (1 - clamped);
 
-    // 2. Sun Glow
-    if (showSun) {
-      const sx = W * 0.82, sy = H * 0.2, sr = 36 * dpr;
-      const glow = ctx.createRadialGradient(sx, sy, sr * 0.1, sx, sy, sr * 2.8);
-      glow.addColorStop(0, 'rgba(255,235,60,0.35)');
-      glow.addColorStop(1, 'rgba(255,200,30,0)');
-      ctx.beginPath();
-      ctx.arc(sx, sy, sr * 2.8, 0, Math.PI * 2);
-      ctx.fillStyle = glow;
-      ctx.fill();
+    // 1. Sky & Sun Glow in Background
+    const sunX = W * 0.82;
+    const sunY = H * 0.22;
+    const sunGrad = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, 48 * dpr);
+    sunGrad.addColorStop(0, 'rgba(255, 186, 8, 0.55)');
+    sunGrad.addColorStop(0.5, 'rgba(255, 77, 109, 0.25)');
+    sunGrad.addColorStop(1, 'rgba(255, 77, 109, 0.0)');
+    ctx.fillStyle = sunGrad;
+    ctx.beginPath();
+    ctx.arc(sunX, sunY, 48 * dpr, 0, Math.PI * 2);
+    ctx.fill();
 
-      const core = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr);
-      core.addColorStop(0, 'rgba(255,248,180,1)');
-      core.addColorStop(0.6, 'rgba(255,220,50,1)');
-      core.addColorStop(1, 'rgba(255,180,0,0.85)');
-      ctx.beginPath();
-      ctx.arc(sx, sy, sr, 0, Math.PI * 2);
-      ctx.fillStyle = core;
-      ctx.fill();
-    }
-
-    // 3. Sand Bed
-    const sandY = H * 0.58;
-    const sandGrad = ctx.createLinearGradient(0, sandY, 0, H);
-    sandGrad.addColorStop(0, '#f4e4c1');
-    sandGrad.addColorStop(0.5, '#e8d5a8');
-    sandGrad.addColorStop(1, '#c9a87a');
+    // 2. Warm Sand Bed Base
+    const sandGrad = ctx.createLinearGradient(0, H - 32 * dpr, 0, H);
+    sandGrad.addColorStop(0, 'rgba(255, 186, 8, 0.12)');
+    sandGrad.addColorStop(1, 'rgba(247, 127, 0, 0.38)');
     ctx.fillStyle = sandGrad;
-    ctx.fillRect(0, sandY, W, H - sandY);
+    ctx.fillRect(0, H - 32 * dpr, W, 32 * dpr);
 
-    // Sand ripples
-    ctx.strokeStyle = 'rgba(180,140,80,0.2)';
-    ctx.lineWidth = dpr;
-    for (let i = 0; i < 5; i++) {
-      const sy2 = sandY + (20 + i * 24) * dpr;
+    // 3. Depth Grid Marks
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+    ctx.lineWidth = 1 * dpr;
+    for (let i = 1; i <= 4; i++) {
+      const gy = (H / 5) * i;
       ctx.beginPath();
-      ctx.moveTo(0, sy2);
-      ctx.bezierCurveTo(W * 0.25, sy2 + 4 * dpr, W * 0.75, sy2 - 4 * dpr, W, sy2);
+      ctx.moveTo(35 * dpr, gy);
+      ctx.lineTo(W, gy);
       ctx.stroke();
     }
 
-    // 4. Water Base
-    const waterBase = H * (1 - (waterPct / 100) * 0.75) - 40 * dpr;
+    // 4. Vibrant Neon Waves (Tropical Turquoise -> Electric Sky Azure -> Deep Purple Ocean)
+    const layers = [
+      { amp: 11 * dpr, freq: 0.011, speed: 0.04, grad: ['rgba(0, 245, 212, 0.95)', 'rgba(0, 187, 249, 0.95)'] },
+      { amp: 8 * dpr, freq: 0.016, speed: 0.055, grad: ['rgba(0, 187, 249, 0.7)', 'rgba(114, 9, 183, 0.88)'] },
+      { amp: 5 * dpr, freq: 0.024, speed: 0.075, grad: ['rgba(114, 9, 183, 0.45)', 'rgba(18, 14, 40, 0.98)'] }
+    ];
 
-    // Wave formula
-    const waveY = (x, layer, time) => {
-      const spd = 0.018 + layer * 0.008;
-      const freq1 = (layers + 2) + layer * 0.85;
-      const freq2 = layers + layer * 0.5;
-      const a = ampD * (0.5 + layer * 0.22);
-      const ph = layer * 1.1;
-      return (
-        a * Math.sin((x / W) * Math.PI * freq1 + time * spd * 60 + ph) +
-        a * 0.35 * Math.sin((x / W) * Math.PI * freq2 + time * (spd + 0.01) * 60)
-      );
-    };
-
-    // Draw wave layers
-    for (let layer = layers - 1; layer >= 0; layer--) {
-      const alpha = 0.4 + layer * 0.16;
+    for (let l = layers.length - 1; l >= 0; l--) {
+      const lyr = layers[l];
       ctx.beginPath();
       ctx.moveTo(0, H);
-      for (let x = 0; x <= W; x += 4 * dpr) {
-        ctx.lineTo(x, waterBase + waveY(x, layer, t));
+
+      for (let x = 0; x <= W; x += 3 * dpr) {
+        const wave = Math.sin(x * lyr.freq + tick * lyr.speed + l * 2.2) * lyr.amp;
+        const y = waterY + wave;
+        ctx.lineTo(x, y);
       }
+
       ctx.lineTo(W, H);
       ctx.closePath();
 
-      const wg = ctx.createLinearGradient(0, waterBase - ampD, 0, H);
-      const r = layer % 2 === 0 ? 42 : 28;
-      const g = layer % 2 === 0 ? 157 : 176;
-      const b = layer % 2 === 0 ? 143 : 200;
-      wg.addColorStop(0, `rgba(${r},${g},${b},${alpha})`);
-      wg.addColorStop(0.6, 'rgba(15,88,100,0.92)');
-      wg.addColorStop(1, 'rgba(8,48,60,0.98)');
-      ctx.fillStyle = wg;
+      const g = ctx.createLinearGradient(0, waterY - 14 * dpr, 0, H);
+      g.addColorStop(0, lyr.grad[0]);
+      g.addColorStop(1, lyr.grad[1]);
+      ctx.fillStyle = g;
       ctx.fill();
     }
 
-    // 5. Foam Crests
+    // 5. Glowing Shimmering Crest Foam
     ctx.save();
-    ctx.shadowBlur = 8 * dpr;
-    ctx.shadowColor = 'rgba(255,255,255,0.6)';
-    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
     ctx.lineWidth = 2.5 * dpr;
+    ctx.shadowColor = '#00f5d4';
+    ctx.shadowBlur = 10 * dpr;
     ctx.beginPath();
-    for (let x = 0; x <= W; x += 4 * dpr) {
-      const y = waterBase + waveY(x, 0, t);
-      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    for (let x = 0; x <= W; x += 3 * dpr) {
+      const wave = Math.sin(x * layers[0].freq + tick * layers[0].speed) * layers[0].amp;
+      const y = waterY + wave;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
     }
     ctx.stroke();
     ctx.restore();
 
-    // 6. Seagulls
-    birds.forEach(b => {
-      b.x += b.speed;
-      if (b.x > W + 40 * dpr) b.x = -40 * dpr;
-      const by = H * b.y + Math.sin(t * b.freq * 60 + b.phase) * b.amp * dpr;
-      const flap = Math.sin(t * 0.09 * 60 + b.phase) * b.size * 0.6;
-      ctx.beginPath();
-      ctx.moveTo(b.x, by);
-      ctx.quadraticCurveTo(b.x - b.size, by - b.size * 0.75 + flap, b.x - b.size * 2.2, by);
-      ctx.moveTo(b.x, by);
-      ctx.quadraticCurveTo(b.x + b.size, by - b.size * 0.75 + flap, b.x + b.size * 2.2, by);
-      ctx.strokeStyle = 'rgba(25,25,45,0.7)';
-      ctx.lineWidth = 1.6 * dpr;
-      ctx.stroke();
-    });
+    // 6. Waterline Level Line & Badge
+    ctx.strokeStyle = 'rgba(0, 245, 212, 0.8)';
+    ctx.setLineDash([4 * dpr, 4 * dpr]);
+    ctx.lineWidth = 1.2 * dpr;
+    ctx.beginPath();
+    ctx.moveTo(0, waterY);
+    ctx.lineTo(W, waterY);
+    ctx.stroke();
+    ctx.setLineDash([]);
 
-    // 7. Tide Direction Indicator
-    const arrowX = W * 0.07;
-    const arrowY = waterBase + 18 * dpr + Math.sin(t * 0.06 * 60) * 6 * dpr;
-    ctx.font = `bold ${22 * dpr}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.globalAlpha = 0.85;
-    ctx.fillStyle = rising ? '#7dd3c0' : '#f4a261';
-    ctx.fillText(rising ? '▲' : '▼', arrowX, arrowY);
-    ctx.globalAlpha = 1;
+    // Water level badge
+    const tagText = `${state.height.toFixed(2)}m`;
+    ctx.font = `800 ${11 * dpr}px 'Outfit', sans-serif`;
+    ctx.fillStyle = '#ffffff';
+    ctx.textAlign = 'right';
+    ctx.fillText(`🌊 ${tagText}`, W - 12 * dpr, waterY - 8 * dpr);
 
-    t += 0.016;
-    state.animFrame = requestAnimationFrame(render);
+    tick += 1;
+    state.animId = requestAnimationFrame(loop);
   }
 
-  render();
+  loop();
 }
+
+// ─── Sparkline Chart ──────────────────────────────────────────────────────────
+function renderHistoryChart() {
+  const rect = chartCanvas.getBoundingClientRect();
+  chartCanvas.width = rect.width * (window.devicePixelRatio || 1);
+  chartCanvas.height = rect.height * (window.devicePixelRatio || 1);
+  const W = chartCanvas.width;
+  const H = chartCanvas.height;
+  const dpr = window.devicePixelRatio || 1;
+
+  chartCtx.clearRect(0, 0, W, H);
+
+  if (!state.readings || state.readings.length < 2) return;
+
+  const chronological = [...state.readings].reverse();
+  const vals = chronological.map(r => r.value);
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const span = Math.max(max - min, 0.1);
+
+  const padX = 14 * dpr;
+  const padY = 12 * dpr;
+  const w = W - padX * 2;
+  const h = H - padY * 2;
+
+  const points = chronological.map((r, i) => ({
+    x: padX + (i / (chronological.length - 1)) * w,
+    y: padY + h - ((r.value - min) / span) * h
+  }));
+
+  // Gradient fill
+  chartCtx.beginPath();
+  chartCtx.moveTo(points[0].x, H);
+  points.forEach(p => chartCtx.lineTo(p.x, p.y));
+  chartCtx.lineTo(points[points.length - 1].x, H);
+  chartCtx.closePath();
+
+  const fill = chartCtx.createLinearGradient(0, 0, 0, H);
+  fill.addColorStop(0, 'rgba(0, 245, 212, 0.35)');
+  fill.addColorStop(1, 'rgba(0, 245, 212, 0.0)');
+  chartCtx.fillStyle = fill;
+  chartCtx.fill();
+
+  // Stroke line
+  chartCtx.beginPath();
+  points.forEach((p, i) => {
+    if (i === 0) chartCtx.moveTo(p.x, p.y);
+    else chartCtx.lineTo(p.x, p.y);
+  });
+  chartCtx.strokeStyle = '#00f5d4';
+  chartCtx.lineWidth = 2.5 * dpr;
+  chartCtx.stroke();
+
+  // Dot marker on current reading
+  const last = points[points.length - 1];
+  chartCtx.beginPath();
+  chartCtx.arc(last.x, last.y, 4.5 * dpr, 0, Math.PI * 2);
+  chartCtx.fillStyle = '#ffffff';
+  chartCtx.fill();
+  chartCtx.strokeStyle = '#00f5d4';
+  chartCtx.lineWidth = 2 * dpr;
+  chartCtx.stroke();
+}
+
+// ─── Init ────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  detectLocation(true);
+});
+
+window.addEventListener('resize', () => {
+  if (state.readings.length) {
+    renderHistoryChart();
+  }
+});
 </script>
 </body>
 </html>
